@@ -68,3 +68,13 @@ X_input = X_input[model.feature_names_in_]
 if st.button("🔮 Predecir demanda"):
     pred = model.predict(X_input)[0]
     st.success(f"📈 Demanda estimada: **{pred:,.0f} MW**")
+
+#para el error de DATABASE_URL
+def db_connect():
+    db_url = os.getenv("DATABASE_URL")
+
+    if not db_url:
+        return None  # ← evita el crash
+
+    engine = create_engine(db_url)
+    return engine
