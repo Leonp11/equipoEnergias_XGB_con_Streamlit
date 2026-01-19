@@ -1,9 +1,11 @@
 #-----------------------------------------
-#Los IMPORTS
+# Los IMPORTS
 #-----------------------------------------
 import streamlit as st
 import pandas as pd
 import joblib
+from pathlib import Path
+
 # -----------------------------
 # CONFIG
 # -----------------------------
@@ -13,15 +15,21 @@ st.set_page_config(
 )
 
 st.title("⚡ Predicción de Demanda Eléctrica")
+
 #-----------------------------------------
-#Ruta del modelo
+# Ruta del modelo
 #-----------------------------------------
-#Ruta del modelo
-BASE_DIR = Path(__file__).resolve().parent.parent  # sube un nivel desde src/
+# Usamos la carpeta raíz desde donde se ejecuta Streamlit
+BASE_DIR = Path().resolve()  # raíz del proyecto
 MODEL_PATH = BASE_DIR / "models" / "xgb_model.pkl"
 
-#Cargamos el modelo
-model = joblib.load(MODEL_PATH)
+# Cargamos el modelo
+try:
+    model = joblib.load(MODEL_PATH)
+    st.success("✅ Modelo cargado correctamente")
+except FileNotFoundError:
+    st.error(f"❌ No se encontró el modelo en: {MODEL_PATH}")
+
 # -----------------------------
 # INPUTS USUARIO
 # -----------------------------
@@ -60,21 +68,13 @@ X_input = pd.DataFrame([{
 }])
 
 # Orden seguro
-X_input = X_input[model.feature_names_in_]
+if 'model' in locals():
+    X_input = X_input[model.feature_names_in_]
 
 # -----------------------------
 # PREDICCIÓN
 # -----------------------------
-if st.button("🔮 Predecir demanda"):
+if st.button("🔮 Predecir demanda") and 'model' in locals():
     pred = model.predict(X_input)[0]
     st.success(f"📈 Demanda estimada: **{pred:,.0f} MW**")
 
-#para el error de DATABASE_URL
-def db_connect():
-    db_url = os.getenv("DATABASE_URL")
-
-    if not db_url:
-        return None  # ← evita el crash
-
-    engine = create_engine(db_url)
-    return engine
