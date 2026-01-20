@@ -6,12 +6,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set(style="whitegrid")
 
-
+# -----------------------------
+# INYECCIÓN DE CSS PARA EL SIDEBAR
+# -----------------------------
 st.markdown(
     """
     <style>
     /* Centrar verticalmente el contenido del sidebar */
-    .css-1d391kg {  /* contenedor principal del sidebar */
+    .css-1d391kg {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -19,8 +21,8 @@ st.markdown(
 
     /* Aumentar tamaño de los botones/flechitas y cambiar color */
     .css-1v3fvcr button {
-        transform: scale(4);  /* 4 veces más grande */
-        color: yellow;         /* color de texto (flechas) */
+        transform: scale(4);
+        color: yellow;
         margin: 10px 0;
     }
 
@@ -29,7 +31,7 @@ st.markdown(
         padding-top: 150px;
     }
 
-    /* Opcional: que el hover también mantenga el color amarillo */
+    /* Hover */
     .css-1v3fvcr button:hover {
         color: yellow;
     }
@@ -37,11 +39,14 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-# -----------------------------
-# Configuración página
-# -----------------------------
-st.set_page_config(page_title="Predicción Demanda Eléctrica", layout="wide")
 
+# -----------------------------
+# CONFIGURACIÓN DE PÁGINA
+# -----------------------------
+st.set_page_config(
+    page_title="Predicción Demanda Eléctrica",
+    layout="centered"
+)
 # -----------------------------
 # Sidebar con menú
 # -----------------------------
