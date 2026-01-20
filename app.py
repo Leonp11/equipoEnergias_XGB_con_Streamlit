@@ -7,7 +7,7 @@ import joblib
 from pathlib import Path
 
 # -----------------------------
-# CONFIG
+# CONFIGURACIÓN DE LA APP
 # -----------------------------
 st.set_page_config(
     page_title="Predicción Demanda Eléctrica",
@@ -19,7 +19,6 @@ st.title("⚡ Predicción de Demanda Eléctrica")
 #-----------------------------------------
 # Ruta del modelo
 #-----------------------------------------
-# Usamos la carpeta raíz desde donde se ejecuta Streamlit
 BASE_DIR = Path().resolve()  # raíz del proyecto
 MODEL_PATH = BASE_DIR / "models" / "xgb_model.pkl"
 
@@ -33,7 +32,7 @@ except FileNotFoundError:
 # -----------------------------
 # INPUTS USUARIO
 # -----------------------------
-st.subheader("Introduce los valores")
+st.subheader("Introduce los valores históricos y climáticos")
 
 demanda_lag_1 = st.number_input("Demanda hace 1 hora (MW)", value=28000.0)
 demanda_lag_24 = st.number_input("Demanda hace 24 horas (MW)", value=27500.0)
@@ -46,9 +45,12 @@ mes = st.slider("Mes", 1, 12, 1)
 es_finde = st.selectbox("¿Es fin de semana?", [0, 1])
 dia_semana = st.slider("Día de la semana (0=Lunes)", 0, 6, 2)
 
-temp = st.number_input("Temperatura Madrid (ºC)", value=8.5)
-temp_aparente = st.number_input("Temperatura aparente (ºC)", value=7.0)
-temp_suelo = st.number_input("Temperatura suelo (ºC)", value=6.2)
+st.markdown("### 🌡️ Temperaturas por región")
+temp_mad = st.number_input("Madrid (ºC)", value=30.0)
+temp_val = st.number_input("Valencia (ºC)", value=29.0)
+temp_pv = st.number_input("País Vasco (ºC)", value=22.0)
+temp_cat = st.number_input("Cataluña (ºC)", value=28.0)
+temp_and = st.number_input("Andalucía (ºC)", value=33.0)
 
 # -----------------------------
 # DATAFRAME PARA EL MODELO
@@ -62,14 +64,19 @@ X_input = pd.DataFrame([{
     "mes": mes,
     "es_finde": es_finde,
     "dia_semana": dia_semana,
-    "Madrid_temperature_2m": temp,
-    "Madrid_apparent_temperature": temp_aparente,
-    "Madrid_soil_temperature_0_to_7cm": temp_suelo
+    "Madrid_temperature_2m": temp_mad,
+    "Valencia_temperature_2m": temp_val,
+    "Pais_Vasco_temperature_2m": temp_pv,
+    "Cataluna_temperature_2m": temp_cat,
+    "Andalucia_temperature_2m": temp_and
 }])
 
-# Orden seguro
+# -----------------------------
+# ALINEACIÓN ROBUSTA CON EL MODELO
+# -----------------------------
 if 'model' in locals():
-    X_input = X_input[model.feature_names_in_]
+    # Reindexa según las columnas exactas del modelo y rellena con 0.0 si falta alguna
+    X_input = X_input.reindex(columns=model.feature_names_in_, fill_value=0.0)
 
 # -----------------------------
 # PREDICCIÓN
@@ -77,4 +84,3 @@ if 'model' in locals():
 if st.button("🔮 Predecir demanda") and 'model' in locals():
     pred = model.predict(X_input)[0]
     st.success(f"📈 Demanda estimada: **{pred:,.0f} MW**")
-
