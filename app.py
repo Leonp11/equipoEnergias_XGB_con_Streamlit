@@ -6,6 +6,37 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set(style="whitegrid")
 
+
+st.markdown(
+    """
+    <style>
+    /* Centrar verticalmente el contenido del sidebar */
+    .css-1d391kg {  /* contenedor principal del sidebar */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    /* Aumentar tamaño de los botones/flechitas y cambiar color */
+    .css-1v3fvcr button {
+        transform: scale(4);  /* 4 veces más grande */
+        color: yellow;         /* color de texto (flechas) */
+        margin: 10px 0;
+    }
+
+    /* Ajustar padding para que el centro se vea bien */
+    .css-1d391kg > div {
+        padding-top: 150px;
+    }
+
+    /* Opcional: que el hover también mantenga el color amarillo */
+    .css-1v3fvcr button:hover {
+        color: yellow;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 # -----------------------------
 # Configuración página
 # -----------------------------
