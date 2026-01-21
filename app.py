@@ -72,31 +72,30 @@ demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
 media_movil_24h = float_input_safe("Media móvil 24h")
 
 
-# Definimos el rango de horas de tu “reloj”
-horas = list(range(7, 24)) + list(range(0, 7))  # 7h–23h, luego 0h–6h
+# -----------------------------
+# Slider interactivo de hora
+# -----------------------------
 
-# Slider interactivo usando índices para recorrer la lista de horas
-indice_hora = st.slider(
-    "Hora del día", 
-    min_value=0, 
-    max_value=len(horas)-1, 
-    value=0,
+# Definimos las horas de 6 AM a 5 AM
+horas = list(range(6, 24)) + list(range(0, 6))  # 6-23, luego 0-5
+
+# Slider mostrando directamente la hora real
+hora_real = st.slider(
+    "Hora del día",
+    min_value=horas[0],
+    max_value=horas[-1],
+    value=18,  # valor por defecto, ejemplo 18h = 6PM
     step=1
 )
 
-# Hora real según índice
-hora_real = horas[indice_hora]
-
-# Selección de emoji según hora
-if 7 <= hora_real <= 18:
-    icono = "☀️"  # día
+# Emoji según día o noche
+if 6 <= hora_real <= 18:  # día de 6AM a 6PM
+    icono = "☀️"
 else:
-    icono = "🌙"  # noche
+    icono = "🌙"
 
-# Mostrar la hora y el emoji
+# Mostramos la hora seleccionada con emoji
 st.markdown(f"**Hora seleccionada:** {hora_real}h {icono}")
-
-
 
 
 
