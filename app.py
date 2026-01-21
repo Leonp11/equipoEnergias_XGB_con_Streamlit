@@ -41,39 +41,27 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 st.title("⚡ Predicción de Demanda Eléctrica")
 st.subheader("Introduce los valores")
 
-# Función para crear input seguro con ejemplo al lado
 def float_input_safe(label, ejemplo=27000):
-    # Creamos un contenedor horizontal
+    # Contenedor horizontal
     col_input, col_ej = st.columns([1, 0.4])
 
     with col_input:
-        # Input como text para poder controlar formato
         val_str = st.text_input(
             f"{label} (MW)", 
             value="", 
-            max_chars=10, 
+            max_chars=10,
             key=label,
-            help=None  # Quita el signo de ?
-        )
-        # Limitar largo de la caja
-        st.markdown(
-            "<style>div.stTextInput>div>input {width: 100%; font-size:16px;}</style>",
-            unsafe_allow_html=True
+            help=None  # Quita signo de ?
         )
 
         # Conversión segura a float
         try:
-            # Limpiamos puntos y convertimos
             val_clean = float(val_str.replace(".", "").replace(",", "")) if val_str else ejemplo
         except:
             val_clean = ejemplo
 
-        # Formateamos para que aparezcan puntos de miles
-        val_display = "{:,.0f}".format(val_clean).replace(",", ".")
-        st.session_state[label] = val_display
-
     with col_ej:
-        # Leyenda Ej. al lado derecho, centrada vertical
+        # Leyenda Ej. al lado derecho
         st.markdown(
             f"<div style='color:gray; text-align:center; margin-top:10px;'>Ej.: {ejemplo:,}</div>",
             unsafe_allow_html=True
@@ -85,6 +73,7 @@ demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
 demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
 demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
 media_movil_24h = float_input_safe("Media móvil 24h")
+
 
 
 
