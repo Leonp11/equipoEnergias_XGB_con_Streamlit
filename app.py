@@ -42,20 +42,47 @@ if seccion == "Predicción" and 'model' in locals():
     st.title("⚡ Predicción de Demanda Eléctrica")
     st.subheader("Introduce los valores")
 
-    # Función auxiliar para mostrar input con leyenda
-    def input_con_ejemplo(label, ejemplo, suffix="MW"):
-        valor = st.text_input(f"{label} ({suffix})", "")
-        st.caption(f"Ejemplo: {ejemplo}{suffix}")
+    # Demanda hace 1 hora
+    col1, col2 = st.columns([1, 0.3])
+    with col1:
+        demanda_lag_1_input = st.text_input("Demanda hace 1 hora (MW)", value="", max_chars=6)
+    with col2:
+        st.markdown("Ej: 27000")
+
+    # Demanda hace 24 horas
+    col1, col2 = st.columns([1, 0.3])
+    with col1:
+        demanda_lag_24_input = st.text_input("Demanda hace 24 horas (MW)", value="", max_chars=6)
+    with col2:
+        st.markdown("Ej: 27000")
+
+    # Demanda hace 168 horas
+    col1, col2 = st.columns([1, 0.3])
+    with col1:
+        demanda_lag_168_input = st.text_input("Demanda hace 168 horas (MW)", value="", max_chars=6)
+    with col2:
+        st.markdown("Ej: 27000")
+
+    # Media móvil 24h
+    col1, col2 = st.columns([1, 0.3])
+    with col1:
+        media_movil_24h_input = st.text_input("Media móvil 24h (MW)", value="", max_chars=6)
+    with col2:
+        st.markdown("Ej: 27000")
+
+    # -----------------------------
+    # Conversión segura a float
+    # -----------------------------
+    def to_float(value, default=27000.0):
         try:
-            return float(valor)
+            return float(value)
         except:
-            return 0.0  # si no hay valor, pone 0.0
-       
-    # Inputs usuario
-    demanda_lag_1 = input_con_ejemplo("Demanda hace 1 hora", 28000)
-    demanda_lag_24 = input_con_ejemplo("Demanda hace 24 horas", 27500)
-    demanda_lag_168 = input_con_ejemplo("Demanda hace 168 horas", 26000)
-    media_movil_24h = input_con_ejemplo("Media móvil 24h", 27000)
+            return default
+
+    demanda_lag_1 = to_float(demanda_lag_1_input)
+    demanda_lag_24 = to_float(demanda_lag_24_input)
+    demanda_lag_168 = to_float(demanda_lag_168_input)
+    media_movil_24h = to_float(media_movil_24h_input)
 
     hora = input_con_ejemplo("Hora del día (0-23)", 18, suffix="h")
     mes = input_con_ejemplo("Mes", 1)
