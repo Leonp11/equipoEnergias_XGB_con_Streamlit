@@ -51,7 +51,7 @@ def float_input_safe(label, ejemplo=27000):
             value="", 
             max_chars=10,
             key=label,
-            help=None  # Quita signo de ?
+            help=f"Ej. {ejemplo}"  # ahora la guía está en el tooltip de ayuda
         )
 
         # Conversión segura a float
@@ -61,17 +61,11 @@ def float_input_safe(label, ejemplo=27000):
             val_clean = ejemplo
 
     with col_ej:
-        # Leyenda Ej. al lado derecho, centrada verticalmente
-        st.markdown(
-            f"""
-            <div style='display:inline-flex; align-items:center; height:38px; margin-left:5px; color:gray;'>
-                Ej. {ejemplo:,}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+        # Columna vacía, ya no necesitamos la leyenda fuera de la caja
+        st.write("")
 
     return val_clean
+
 
 
 demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
