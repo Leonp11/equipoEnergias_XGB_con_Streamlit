@@ -38,34 +38,36 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 # -----------------------------
 # PARTE 1: Inputs de demanda
 # -----------------------------
-st.title("⚡ Predicción de Demanda Eléctrica")
-st.subheader("Introduce los valores")
-
-# Función para crear input seguro con ejemplo al lado derecho
-# Función para input seguro con ejemplo al lado derecho
-def float_input_peque(label, ejemplo=27000):
-    col1, col2 = st.columns([3,1])  # 3/4 caja, 1/4 para el ejemplo
-    with col1:
-        val_str = st.text_input(label, value="", max_chars=10, key=label)
-        # Conversión segura a float
-        try:
-            val = float(val_str)
-        except (ValueError, TypeError):
-            val = float(ejemplo)  # fallback al ejemplo como float
-    with col2:
-        st.markdown(
-            f"<div style='text-align:center; color:gray; font-size:14px; line-height:38px;'>Ej.: {ejemplo}</div>",
-            unsafe_allow_html=True
-        )
+def float_input_min(label, ejemplo=27000):
+    # Contenedor con caja y ejemplo alineado a la derecha
+    html_input = f"""
+    <div style='display:flex; align-items:center; width:100%; height:30px;'>
+        <input type="text" id="{label}" name="{label}" maxlength="10"
+            style="flex:3; height:100%; font-size:16px; padding:4px;" />
+        <div style="flex:1; text-align:center; color:gray; font-size:14px;">
+            Ej.: {ejemplo}
+        </div>
+    </div>
+    """
+    # Renderizamos HTML
+    st.markdown(html_input, unsafe_allow_html=True)
+    
+    # Leemos valor ingresado desde Streamlit (fallback a ejemplo si está vacío o incorrecto)
+    val_str = st.session_state.get(label, "")
+    try:
+        val = float(val_str)
+    except (ValueError, TypeError):
+        val = float(ejemplo)
     return val
 
 # -----------------------------
 # Parte 1: Inputs de demanda
 # -----------------------------
-demanda_lag_1 = float_input_peque("Demanda hace 1 hora (MW)")
-demanda_lag_24 = float_input_peque("Demanda hace 24 horas (MW)")
-demanda_lag_168 = float_input_peque("Demanda hace 168 horas (MW)")
-media_movil_24h = float_input_peque("Media móvil 24h (MW)")
+demanda_lag_1 = float_input_min("demanda_lag_1")
+demanda_lag_24 = float_input_min("demanda_lag_24")
+demanda_lag_168 = float_input_min("demanda_lag_168")
+media_movil_24h = float_input_min("media_movil_24h")
+
 
 
 
