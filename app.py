@@ -35,54 +35,37 @@ except FileNotFoundError:
 st.sidebar.title("Menú")
 seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 
+
 # -----------------------------
-# SECCIÓN PREDICCIÓN
+# PARTE 1: Inputs de demanda
 # -----------------------------
-if seccion == "Predicción" and 'model' in locals():
-    st.title("⚡ Predicción de Demanda Eléctrica")
-    st.subheader("Introduce los valores")
+st.title("⚡ Predicción de Demanda Eléctrica")
+st.subheader("Introduce los valores")
 
-    # Demanda hace 1 hora
-    col1, col2 = st.columns([1, 0.3])
-    with col1:
-        demanda_lag_1_input = st.text_input("Demanda hace 1 hora (MW)", value="", max_chars=6)
-    with col2:
-        st.markdown("Ej: 27000")
+# Función para crear input seguro con ejemplo al lado
+def float_input_safe(label, ejemplo=27000.0):
+    val_str = st.text_input(
+        f"{label} (MW)", 
+        value="", 
+        max_chars=10, 
+        key=label
+    )
+    try:
+        val = float(val_str)
+    except:
+        val = ejemplo
+    # Mostramos ejemplo al lado, centrado y en color tenue
+    st.markdown(
+        f"<div style='text-align:center; color:gray; font-size:14px;'>Ej.: {ejemplo}</div>", 
+        unsafe_allow_html=True
+    )
+    return val
 
-    # Demanda hace 24 horas
-    col1, col2 = st.columns([1, 0.3])
-    with col1:
-        demanda_lag_24_input = st.text_input("Demanda hace 24 horas (MW)", value="", max_chars=6)
-    with col2:
-        st.markdown("Ej: 27000")
+demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
+demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
+demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
+media_movil_24h = float_input_safe("Media móvil 24h")
 
-    # Demanda hace 168 horas
-    col1, col2 = st.columns([1, 0.3])
-    with col1:
-        demanda_lag_168_input = st.text_input("Demanda hace 168 horas (MW)", value="", max_chars=6)
-    with col2:
-        st.markdown("Ej: 27000")
-
-    # Media móvil 24h
-    col1, col2 = st.columns([1, 0.3])
-    with col1:
-        media_movil_24h_input = st.text_input("Media móvil 24h (MW)", value="", max_chars=6)
-    with col2:
-        st.markdown("Ej: 27000")
-
-    # -----------------------------
-    # Conversión segura a float
-    # -----------------------------
-    def to_float(value, default=27000.0):
-        try:
-            return float(value)
-        except:
-            return default
-
-    demanda_lag_1 = to_float(demanda_lag_1_input)
-    demanda_lag_24 = to_float(demanda_lag_24_input)
-    demanda_lag_168 = to_float(demanda_lag_168_input)
-    media_movil_24h = to_float(media_movil_24h_input)
 
     hora = input_con_ejemplo("Hora del día (0-23)", 18, suffix="h")
     mes = input_con_ejemplo("Mes", 1)
