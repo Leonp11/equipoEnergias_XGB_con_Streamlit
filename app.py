@@ -43,7 +43,7 @@ st.subheader("Introduce los valores")
 
 def float_input_safe(label, ejemplo=27000):
     # Contenedor horizontal
-    col_input, col_ej = st.columns([1, 0.4])
+    col_input, col_ej = st.columns([0.2, 0.4])
 
     with col_input:
         val_str = st.text_input(
@@ -63,7 +63,7 @@ def float_input_safe(label, ejemplo=27000):
     with col_ej:
         # Leyenda Ej. al lado derecho
         st.markdown(
-            f"<div style='color:gray; text-align:center; margin-top:10px;'>Ej.: {ejemplo:,}</div>",
+            f"<div style='color:gray; text-align:center; margin-top:10px;'>Ej. {ejemplo:,}</div>",
             unsafe_allow_html=True
         )
 
