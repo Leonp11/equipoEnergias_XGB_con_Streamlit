@@ -38,50 +38,35 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 # -----------------------------
 # PARTE 1: Inputs de demanda
 # -----------------------------
-st.title("⚡ Predicción de Demanda Eléctrica")
-st.subheader("Introduce los valores")
-
-# Función para crear input seguro con caja pequeña y ejemplo al lado derecho
-def float_input_con_ejemplo(label, ejemplo=27000):
-    # Convertimos a float seguro
-    val_str = st.text_input(
-        label, 
-        value="", 
-        max_chars=10, 
-        key=label, 
-        help=f"Introduce un valor numérico, ej.: {ejemplo}"
-    )
-    try:
-        val = float(val_str)
-    except:
-        val = ejemplo
-
-    # Caja más corta: se logra con CSS inline
-    st.markdown(
-        f"""
-        <style>
-        div[data-baseweb="input"] > input {{
-            width: 100px !important;  /* ancho reducido a 1/4 */
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    # Leyenda al lado derecho, centrada verticalmente
-    st.markdown(
-        f"<div style='display:flex; justify-content:flex-end; align-items:center; color:gray; font-size:14px;'>Ej.: {ejemplo}</div>",
-        unsafe_allow_html=True
-    )
+# Función para crear input seguro y caja corta con leyenda a la derecha
+def float_input_safe_corta(label, ejemplo=27000):
+    col1, col2 = st.columns([1, 1])  # dos columnas: input y ejemplo
+    with col1:
+        val_str = st.text_input(
+            f"{label} (MW)", 
+            value="", 
+            max_chars=10, 
+            key=label, 
+            help=f"Ingrese un número, Ej.: {ejemplo}"
+        )
+        try:
+            val = float(val_str)
+        except:
+            val = ejemplo
+    with col2:
+        st.markdown(
+            f"<div style='text-align:center; color:gray; font-size:14px;'>{ejemplo}</div>",
+            unsafe_allow_html=True
+        )
     return val
 
-demanda_lag_1 = float_input_con_ejemplo("Demanda hace 1 hora (MW)")
-demanda_lag_24 = float_input_con_ejemplo("Demanda hace 24 horas (MW)")
-demanda_lag_168 = float_input_con_ejemplo("Demanda hace 168 horas (MW)")
-media_movil_24h = float_input_con_ejemplo("Media móvil 24h (MW)")
-
-
-
+# -----------------------------
+# PARTE 1: Inputs de demanda (cajas cortas)
+# -----------------------------
+demanda_lag_1 = float_input_safe_corta("Demanda hace 1 hora")
+demanda_lag_24 = float_input_safe_corta("Demanda hace 24 horas")
+demanda_lag_168 = float_input_safe_corta("Demanda hace 168 horas")
+media_movil_24h = float_input_safe_corta("Media móvil 24h")
 
 
 
