@@ -72,51 +72,39 @@ demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
 media_movil_24h = float_input_safe("Media móvil 24h")
 
 
-import streamlit as st
-
 # -----------------------------
-# Slider interactivo de hora con color dinámico y emoji
+# Slider interactivo de hora con color fijo naranja eléctrico y emoji
 # -----------------------------
 
-# Columnas para controlar ancho
-col1, col2 = st.columns([2,1])  # 2/3 ancho para slider
+# Columnas para controlar ancho (2/3 del ancho de pantalla)
+col1, col2 = st.columns([2,1])
 
 with col1:
     hora_real = st.slider(
         "Hora del día",
         min_value=0,
         max_value=23,
-        value=18,  # valor por defecto 18h = 6PM
+        value=18,  # valor por defecto = 6 PM
         step=1
     )
 
-# Emoji según día/noche
+# Emoji dinámico según día/noche
 if 6 <= hora_real <= 18:
     icono = "☀️"
 else:
     icono = "🌙"
 
-# Color dinámico según hora
-if 6 <= hora_real <= 12:       # mañana
-    color = "#90ee90"          # verde claro
-elif 13 <= hora_real <= 18:    # tarde
-    color = "#FFA500"          # naranja
-else:                          # noche
-    color = "#1E90FF"          # azul cobalto
-
-# Aplicar color al slider con CSS
+# Color fijo del slider: Naranja eléctrico (#FF6F00)
 st.markdown(f"""
 <style>
 div[data-baseweb="slider"] input[type="range"] {{
-    accent-color: {color};
+    accent-color: #FF6F00;
 }}
 </style>
 """, unsafe_allow_html=True)
 
-# Mostrar hora y emoji
+# Mostrar la hora seleccionada con emoji
 st.markdown(f"**Hora seleccionada:** {hora_real}h {icono}")
-
-
 
 
 mes = st.number_input("Mes", min_value=1, max_value=12, value=1, step=1)
