@@ -129,7 +129,7 @@ X_input = pd.DataFrame([{
     "demanda_lag_24": demanda_lag_24,
     "demanda_lag_168": demanda_lag_168,
     "media_movil_24h": media_movil_24h,
-    "hora": hora,
+    "hora": hora_real,
     "mes": mes,
     "es_finde": es_finde_num,
     "dia_semana": dia_semana,
