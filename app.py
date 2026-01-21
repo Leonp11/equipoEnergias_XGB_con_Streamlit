@@ -38,36 +38,50 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 # -----------------------------
 # PARTE 1: Inputs de demanda
 # -----------------------------
-# Función para crear input seguro y caja corta con leyenda a la derecha
-def float_input_safe_corta(label, ejemplo=27000):
-    col1, col2 = st.columns([1, 1])  # dos columnas: input y ejemplo
-    with col1:
-        val_str = st.text_input(
-            f"{label} (MW)", 
-            value="", 
-            max_chars=10, 
-            key=label, 
-            help=f"Ingrese un número, Ej.: {ejemplo}"
-        )
-        try:
-            val = float(val_str)
-        except:
-            val = ejemplo
-    with col2:
-        st.markdown(
-            f"<div style='text-align:center; color:gray; font-size:14px;'>{ejemplo}</div>",
-            unsafe_allow_html=True
-        )
-    return val
+st.title("⚡ Predicción de Demanda Eléctrica")
+st.subheader("Introduce los valores")
 
-# -----------------------------
-# PARTE 1: Inputs de demanda (cajas cortas)
-# -----------------------------
-demanda_lag_1 = float_input_safe_corta("Demanda hace 1 hora")
-demanda_lag_24 = float_input_safe_corta("Demanda hace 24 horas")
-demanda_lag_168 = float_input_safe_corta("Demanda hace 168 horas")
-media_movil_24h = float_input_safe_corta("Media móvil 24h")
+def float_input_miles(label, ejemplo=27000):
+    """
+    Input seguro de tipo float que muestra la leyenda Ej. al lado
+    y formatea miles dentro de la caja.
+    """
+    # Usamos un contenedor horizontal para caja y leyenda
+    cont = st.container()
+    cols = cont.columns([3, 1])  # caja más grande, guía más pequeña
 
+    # Caja de texto sin ayuda (no ?)
+    val_str = cols[0].text_input(
+        label, 
+        value="", 
+        max_chars=10, 
+        key=label
+    )
+
+    # Convertimos a float seguro
+    try:
+        val_float = float(val_str.replace(".", "").replace(",", "."))
+    except:
+        val_float = ejemplo
+
+    # Formateamos miles para que se vea claramente
+    val_formateado = "{:,.0f}".format(val_float).replace(",", ".")
+    # Si el usuario escribe algo, mostramos con puntos
+    if val_str != "":
+        cols[0].text_input(label, value=val_formateado, key=label+"_fmt")
+
+    # Leyenda al lado derecho, centrada y gris
+    cols[1].markdown(
+        f"<div style='color:gray; text-align:center; line-height:38px;'>Ej.: {ejemplo}</div>",
+        unsafe_allow_html=True
+    )
+
+    return val_float
+
+demanda_lag_1 = float_input_miles("Demanda hace 1 hora (MW)")
+demanda_lag_24 = float_input_miles("Demanda hace 24 horas (MW)")
+demanda_lag_168 = float_input_miles("Demanda hace 168 horas (MW)")
+media_movil_24h = float_input_miles("Media móvil 24h (MW)")
 
 
 # Inputs tipo slider / select
