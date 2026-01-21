@@ -36,35 +36,44 @@ st.sidebar.title("Menú")
 seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 
 # -----------------------------
-# PARTE 1: Inputs de demanda y predicción
+# PARTE 1: Inputs de demanda
 # -----------------------------
 st.title("⚡ Predicción de Demanda Eléctrica")
 st.subheader("Introduce los valores")
 
-# Función para crear input seguro con ejemplo al lado
-def float_input_safe(label, ejemplo=27000.0):
-    val_str = st.text_input(
-        f"{label} (MW)", 
-        value="", 
-        max_chars=10, 
-        key=label
-    )
+# Función para crear input seguro con ejemplo al lado derecho
+def float_input_safe(label, ejemplo=27000):
+    # Caja HTML con placeholder al lado derecho, centrado vertical
+    st.markdown(f"""
+        <div style="display:flex; align-items:center; margin-bottom:10px;">
+            <input type="text" 
+                id="{label}" 
+                placeholder="Ej. {ejemplo}" 
+                style="
+                    width: 25%;          /* 1/4 del ancho */
+                    padding: 5px 10px;   /* altura reducida */
+                    text-align: right;    /* placeholder al lado derecho */
+                    color: black;
+                    font-size:16px;
+                "
+            >
+        </div>
+    """, unsafe_allow_html=True)
+    
+    # Capturamos valor real con st.text_input
+    val_str = st.text_input(label, value="", max_chars=10, key=f"key_{label}")
     try:
         val = float(val_str)
-    except:
-        val = ejemplo
-    # Mostramos ejemplo al lado, centrado y en color tenue
-    st.markdown(
-        f"<div style='text-align:center; color:gray; font-size:14px;'>Ej.: {ejemplo}</div>", 
-        unsafe_allow_html=True
-    )
+    except ValueError:
+        val = ejemplo  # si no es float válido, usamos ejemplo
     return val
 
-# Inputs de demanda
+# Inputs de la Parte 1
 demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
 demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
 demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
 media_movil_24h = float_input_safe("Media móvil 24h")
+
 
 # Inputs tipo slider / select
 hora = st.number_input("Hora del día (0-23)", min_value=0, max_value=23, value=18, step=1)
