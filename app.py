@@ -61,10 +61,10 @@ def float_input_safe(label, ejemplo=27000):
             val_clean = ejemplo
 
     with col_ej:
-        # Leyenda Ej. al lado derecho, más cerca de la caja y centrado verticalmente
+        # Leyenda Ej. al lado derecho, centrada verticalmente
         st.markdown(
             f"""
-            <div style='color:gray; display:flex; align-items:center; height:100%; margin-left:5px;'>
+            <div style='display:inline-flex; align-items:center; height:38px; margin-left:5px; color:gray;'>
                 Ej. {ejemplo:,}
             </div>
             """,
@@ -72,6 +72,7 @@ def float_input_safe(label, ejemplo=27000):
         )
 
     return val_clean
+
 
 demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
 demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
