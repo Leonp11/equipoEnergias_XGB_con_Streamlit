@@ -41,47 +41,51 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 st.title("⚡ Predicción de Demanda Eléctrica")
 st.subheader("Introduce los valores")
 
-def float_input_miles(label, ejemplo=27000):
-    """
-    Input seguro de tipo float que muestra la leyenda Ej. al lado
-    y formatea miles dentro de la caja.
-    """
-    # Usamos un contenedor horizontal para caja y leyenda
-    cont = st.container()
-    cols = cont.columns([3, 1])  # caja más grande, guía más pequeña
+# Función para crear input seguro con ejemplo al lado
+def float_input_safe(label, ejemplo=27000):
+    # Creamos un contenedor horizontal
+    col_input, col_ej = st.columns([1, 0.4])
 
-    # Caja de texto sin ayuda (no ?)
-    val_str = cols[0].text_input(
-        label, 
-        value="", 
-        max_chars=10, 
-        key=label
-    )
+    with col_input:
+        # Input como text para poder controlar formato
+        val_str = st.text_input(
+            f"{label} (MW)", 
+            value="", 
+            max_chars=10, 
+            key=label,
+            help=None  # Quita el signo de ?
+        )
+        # Limitar largo de la caja
+        st.markdown(
+            "<style>div.stTextInput>div>input {width: 100%; font-size:16px;}</style>",
+            unsafe_allow_html=True
+        )
 
-    # Convertimos a float seguro
-    try:
-        val_float = float(val_str.replace(".", "").replace(",", "."))
-    except:
-        val_float = ejemplo
+        # Conversión segura a float
+        try:
+            # Limpiamos puntos y convertimos
+            val_clean = float(val_str.replace(".", "").replace(",", "")) if val_str else ejemplo
+        except:
+            val_clean = ejemplo
 
-    # Formateamos miles para que se vea claramente
-    val_formateado = "{:,.0f}".format(val_float).replace(",", ".")
-    # Si el usuario escribe algo, mostramos con puntos
-    if val_str != "":
-        cols[0].text_input(label, value=val_formateado, key=label+"_fmt")
+        # Formateamos para que aparezcan puntos de miles
+        val_display = "{:,.0f}".format(val_clean).replace(",", ".")
+        st.session_state[label] = val_display
 
-    # Leyenda al lado derecho, centrada y gris
-    cols[1].markdown(
-        f"<div style='color:gray; text-align:center; line-height:38px;'>Ej.: {ejemplo}</div>",
-        unsafe_allow_html=True
-    )
+    with col_ej:
+        # Leyenda Ej. al lado derecho, centrada vertical
+        st.markdown(
+            f"<div style='color:gray; text-align:center; margin-top:10px;'>Ej.: {ejemplo:,}</div>",
+            unsafe_allow_html=True
+        )
 
-    return val_float
+    return val_clean
 
-demanda_lag_1 = float_input_miles("Demanda hace 1 hora (MW)")
-demanda_lag_24 = float_input_miles("Demanda hace 24 horas (MW)")
-demanda_lag_168 = float_input_miles("Demanda hace 168 horas (MW)")
-media_movil_24h = float_input_miles("Media móvil 24h (MW)")
+demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
+demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
+demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
+media_movil_24h = float_input_safe("Media móvil 24h")
+
 
 
 # Inputs tipo slider / select
