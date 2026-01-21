@@ -63,11 +63,11 @@ if seccion == "Predicción" and 'model' in locals():
     dia_semana = st.slider("Día de la semana (0=Lunes)", 0, 6, 2)
 
     st.markdown("### 🌡️ Temperaturas por región")
-    temp_mad = st.number_input("Madrid (ºC)", value=30.0)
-    temp_val = st.number_input("Valencia (ºC)", value=29.0)
-    temp_pv = st.number_input("País Vasco (ºC)", value=22.0)
-    temp_cat = st.number_input("Cataluña (ºC)", value=28.0)
-    temp_and = st.number_input("Andalucía (ºC)", value=33.0)
+    temp_mad = st.number_input("Región Central (ºC)", value=30.0)
+    temp_val = st.number_input("Región Sureste (ºC)", value=29.0)
+    temp_pv = st.number_input("Región Norte (ºC)", value=22.0)
+    temp_cat = st.number_input("Región Noreste (ºC)", value=28.0)
+    temp_and = st.number_input("Región Sur (ºC)", value=33.0)
 
     # -----------------------------
     # DataFrame para el modelo
@@ -100,9 +100,9 @@ if seccion == "Predicción" and 'model' in locals():
     # -----------------------------
     # Predicción
     # -----------------------------
-    if st.button("🔮 Predecir demanda"):
+    if st.button("Calcular"):
         pred = model.predict(X_input)[0]
-        st.success(f"📈 Demanda estimada: **{pred:,.0f} MW**")
+        st.success(f"📈 La predicción de demanda real es de **{pred:,.0f} MW**")
 
 # -----------------------------
 # SECCIÓN EDA
