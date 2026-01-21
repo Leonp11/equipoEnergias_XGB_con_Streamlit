@@ -42,37 +42,31 @@ st.title("⚡ Predicción de Demanda Eléctrica")
 st.subheader("Introduce los valores")
 
 # Función para crear input seguro con ejemplo al lado derecho
-def float_input_safe(label, ejemplo=27000):
-    # Caja HTML con placeholder al lado derecho, centrado vertical
-    st.markdown(f"""
-        <div style="display:flex; align-items:center; margin-bottom:10px;">
-            <input type="text" 
-                id="{label}" 
-                placeholder="Ej. {ejemplo}" 
-                style="
-                    width: 25%;          /* 1/4 del ancho */
-                    padding: 5px 10px;   /* altura reducida */
-                    text-align: right;    /* placeholder al lado derecho */
-                    color: black;
-                    font-size:16px;
-                "
-            >
-        </div>
-    """, unsafe_allow_html=True)
-    
-    # Capturamos valor real con st.text_input
-    val_str = st.text_input(label, value="", max_chars=10, key=f"key_{label}")
-    try:
-        val = float(val_str)
-    except ValueError:
-        val = ejemplo  # si no es float válido, usamos ejemplo
+# Función para input seguro con ejemplo al lado derecho
+def float_input_peque(label, ejemplo=27000):
+    col1, col2 = st.columns([3,1])  # 3/4 caja, 1/4 para el ejemplo
+    with col1:
+        val_str = st.text_input(label, value="", max_chars=10, key=label)
+        # Conversión segura a float
+        try:
+            val = float(val_str)
+        except (ValueError, TypeError):
+            val = float(ejemplo)  # fallback al ejemplo como float
+    with col2:
+        st.markdown(
+            f"<div style='text-align:center; color:gray; font-size:14px; line-height:38px;'>Ej.: {ejemplo}</div>",
+            unsafe_allow_html=True
+        )
     return val
 
-# Inputs de la Parte 1
-demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
-demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
-demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
-media_movil_24h = float_input_safe("Media móvil 24h")
+# -----------------------------
+# Parte 1: Inputs de demanda
+# -----------------------------
+demanda_lag_1 = float_input_peque("Demanda hace 1 hora (MW)")
+demanda_lag_24 = float_input_peque("Demanda hace 24 horas (MW)")
+demanda_lag_168 = float_input_peque("Demanda hace 168 horas (MW)")
+media_movil_24h = float_input_peque("Media móvil 24h (MW)")
+
 
 
 # Inputs tipo slider / select
