@@ -41,32 +41,45 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 st.title("⚡ Predicción de Demanda Eléctrica")
 st.subheader("Introduce los valores")
 
-# Función para crear input seguro con ejemplo al lado
-def float_input_safe(label, ejemplo=27000):
-    # Caja más corta: width reducido al 50%
+# Función para crear input seguro con caja pequeña y ejemplo al lado derecho
+def float_input_con_ejemplo(label, ejemplo=27000):
+    # Convertimos a float seguro
     val_str = st.text_input(
-        f"{label} (MW)", 
+        label, 
         value="", 
         max_chars=10, 
-        key=label,
-        help=f"Ejemplo: {ejemplo}"  # ayuda emergente opcional
+        key=label, 
+        help=f"Introduce un valor numérico, ej.: {ejemplo}"
     )
     try:
         val = float(val_str)
     except:
         val = ejemplo
-    # Leyenda fuera de la caja, alineada a la derecha y centrada verticalmente
+
+    # Caja más corta: se logra con CSS inline
     st.markdown(
-        f"<div style='text-align:right; color:gray; font-size:14px; margin-top:-25px; margin-bottom:10px;'>Ej.: {ejemplo}</div>", 
+        f"""
+        <style>
+        div[data-baseweb="input"] > input {{
+            width: 100px !important;  /* ancho reducido a 1/4 */
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    # Leyenda al lado derecho, centrada verticalmente
+    st.markdown(
+        f"<div style='display:flex; justify-content:flex-end; align-items:center; color:gray; font-size:14px;'>Ej.: {ejemplo}</div>",
         unsafe_allow_html=True
     )
     return val
 
-# Inputs principales (parte 1) con float seguro y leyenda correcta
-demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
-demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
-demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
-media_movil_24h = float_input_safe("Media móvil 24h")
+demanda_lag_1 = float_input_con_ejemplo("Demanda hace 1 hora (MW)")
+demanda_lag_24 = float_input_con_ejemplo("Demanda hace 24 horas (MW)")
+demanda_lag_168 = float_input_con_ejemplo("Demanda hace 168 horas (MW)")
+media_movil_24h = float_input_con_ejemplo("Media móvil 24h (MW)")
+
 
 
 
