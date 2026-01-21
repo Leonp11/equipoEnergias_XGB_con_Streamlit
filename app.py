@@ -38,35 +38,36 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 # -----------------------------
 # PARTE 1: Inputs de demanda
 # -----------------------------
-def float_input_min(label, ejemplo=27000):
-    # Contenedor con caja y ejemplo alineado a la derecha
-    html_input = f"""
-    <div style='display:flex; align-items:center; width:100%; height:30px;'>
-        <input type="text" id="{label}" name="{label}" maxlength="10"
-            style="flex:3; height:100%; font-size:16px; padding:4px;" />
-        <div style="flex:1; text-align:center; color:gray; font-size:14px;">
-            Ej.: {ejemplo}
-        </div>
-    </div>
-    """
-    # Renderizamos HTML
-    st.markdown(html_input, unsafe_allow_html=True)
-    
-    # Leemos valor ingresado desde Streamlit (fallback a ejemplo si está vacío o incorrecto)
-    val_str = st.session_state.get(label, "")
+st.title("⚡ Predicción de Demanda Eléctrica")
+st.subheader("Introduce los valores")
+
+# Función para crear input seguro con ejemplo al lado
+def float_input_safe(label, ejemplo=27000):
+    # Caja más corta: width reducido al 50%
+    val_str = st.text_input(
+        f"{label} (MW)", 
+        value="", 
+        max_chars=10, 
+        key=label,
+        help=f"Ejemplo: {ejemplo}"  # ayuda emergente opcional
+    )
     try:
         val = float(val_str)
-    except (ValueError, TypeError):
-        val = float(ejemplo)
+    except:
+        val = ejemplo
+    # Leyenda fuera de la caja, alineada a la derecha y centrada verticalmente
+    st.markdown(
+        f"<div style='text-align:right; color:gray; font-size:14px; margin-top:-25px; margin-bottom:10px;'>Ej.: {ejemplo}</div>", 
+        unsafe_allow_html=True
+    )
     return val
 
-# -----------------------------
-# Parte 1: Inputs de demanda
-# -----------------------------
-demanda_lag_1 = float_input_min("demanda_lag_1")
-demanda_lag_24 = float_input_min("demanda_lag_24")
-demanda_lag_168 = float_input_min("demanda_lag_168")
-media_movil_24h = float_input_min("media_movil_24h")
+# Inputs principales (parte 1) con float seguro y leyenda correcta
+demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
+demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
+demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
+media_movil_24h = float_input_safe("Media móvil 24h")
+
 
 
 
