@@ -98,7 +98,7 @@ div[data-baseweb="slider"] input[type="range"] {{
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; font-weight:bold; font-size:18px; color:#0047AB;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; font-weight:bold; font-size:18px; color:#155724;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
 
 
 # -----------------------------
@@ -220,7 +220,7 @@ if st.button("Calcular"):
             border-radius:5px;
             text-align:center;
         ">
-            <div style="font-size:18px; font-weight:normal;">📈 La predicción de demanda real es de:</div>
+            <div style="font-size:18px; font-weight:normal;">La predicción de demanda real es de:</div>
             <div style="font-size:28px; font-weight:bold;">{pred:,.0f} MW</div>
         </div>
         """,
