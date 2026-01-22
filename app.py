@@ -107,10 +107,30 @@ div[data-baseweb="slider"] input[type="range"] {{
 st.markdown(f"**Hora seleccionada:** {hora_real}h {icono}")
 
 
-es_finde = st.selectbox("¿Es fin de semana?", ["Sí", "No"])
-es_finde_num = 1 if es_finde == "Sí" else 0
+import streamlit as st
 
-dia_semana = st.number_input("Día de la semana (0=Lunes)", min_value=0, max_value=6, value=2, step=1)
+# Lista de nombres de días
+dias_semana_nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+
+# Slider para el día de la semana
+dia_semana = st.slider(
+    "Día de la semana",
+    min_value=0,
+    max_value=6,
+    value=2,  # Por defecto Miércoles
+    step=1
+)
+
+# Nombre del día seleccionado
+dia_nombre = dias_semana_nombres[dia_semana]
+
+# Calcular si es fin de semana
+es_finde_num = 1 if dia_semana in [5, 6] else 0
+es_finde_texto = "Sí" if es_finde_num == 1 else "No"
+
+# Mostrar información
+st.markdown(f"**Día seleccionado:** {dia_nombre}")
+st.markdown(f"**Es fin de semana:** {es_finde_texto}")
 
 # -----------------------------
 # MES + ESTACIÓN DEL AÑO
