@@ -153,7 +153,7 @@ meses = {
     "Diciembre": 12
 }
 
-col1, col2 = st.columns([0,2,0,4])  # aquí 1:1, así col1 tiene la mitad
+col1, col2 = st.columns([0.2,0.4])  # aquí 1:1, así col1 tiene la mitad
 with col1:
     mes_nombre = st.selectbox("Mes", list(meses.keys()))
     mes = meses[mes_nombre]
