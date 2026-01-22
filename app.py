@@ -157,7 +157,7 @@ mes_nombre = st.selectbox("Mes", list(meses.keys()))
 mes = meses[mes_nombre]
 
 # Cálculo de estación
-if mes in [12, 1, 2]:
+if mes in [12, 0, 2]:
     estacion = "❄️ Invierno"
 elif mes in [3, 4, 5]:
     estacion = "🌱 Primavera"
@@ -171,11 +171,21 @@ st.markdown(f"<div style='margin-top:5px; margin-bottom:15px; font-weight:bold;'
 
 
 st.markdown("### 🌡️ Temperaturas por región")
-temp_mad = st.number_input("Región Central (ºC)", value=30.0)
-temp_val = st.number_input("Región Sureste (ºC)", value=29.0)
-temp_pv = st.number_input("Región Norte (ºC)", value=22.0)
-temp_cat = st.number_input("Región Noreste (ºC)", value=28.0)
-temp_and = st.number_input("Región Sur (ºC)", value=33.0)
+
+# Creamos 3 columnas para distribuir los inputs
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    temp_mad = st.number_input("Región Central (ºC)", value=30.0)
+    temp_val = st.number_input("Región Sureste (ºC)", value=29.0)
+
+with col2:
+    temp_pv = st.number_input("Región Norte (ºC)", value=22.0)
+    temp_cat = st.number_input("Región Noreste (ºC)", value=28.0)
+
+with col3:
+    temp_and = st.number_input("Región Sur (ºC)", value=33.0)
+
 
 # -----------------------------
 # DataFrame para el modelo
