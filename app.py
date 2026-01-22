@@ -76,7 +76,6 @@ media_movil_24h = float_input_safe("Media móvil 24h")
 # Slider interactivo de hora con color fijo naranja eléctrico y emoji
 # -----------------------------
 
-# Columnas para controlar ancho (2/3 del ancho de pantalla)
 col1, col2 = st.columns([2,1])
 
 with col1:
@@ -89,10 +88,7 @@ with col1:
     )
 
 # Emoji dinámico según día/noche
-if 6 <= hora_real <= 18:
-    icono = "☀️"
-else:
-    icono = "🌙"
+icono = "☀️" if 6 <= hora_real <= 18 else "🌙"
 
 # Color fijo del slider: Naranja eléctrico (#FF6F00)
 st.markdown(f"""
@@ -103,40 +99,36 @@ div[data-baseweb="slider"] input[type="range"] {{
 </style>
 """, unsafe_allow_html=True)
 
-# Mostrar la hora seleccionada con emoji
-st.markdown(f"**Hora seleccionada:** {hora_real}h {icono}")
+# Mostrar la hora seleccionada con emoji, con margen y color ligero
+st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; color:#FF6F00; font-weight:bold;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
 
 
-import streamlit as st
+# -----------------------------
+# Slider para el día de la semana
+# -----------------------------
 
-# Lista de nombres de días
 dias_semana_nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
-# Slider para el día de la semana
 dia_semana = st.slider(
     "Día de la semana",
-    min_value=0,
-    max_value=6,
-    value=2,  # Por defecto Miércoles
+    min_value=1,
+    max_value=7,
+    value=3,  # Por defecto Miércoles
     step=1
 )
 
-# Nombre del día seleccionado
-dia_nombre = dias_semana_nombres[dia_semana]
-
-# Calcular si es fin de semana
-es_finde_num = 1 if dia_semana in [5, 6] else 0
+dia_nombre = dias_semana_nombres[dia_semana - 1]
+es_finde_num = 1 if dia_semana in [6, 7] else 0
 es_finde_texto = "Sí" if es_finde_num == 1 else "No"
 
-# Mostrar información
-st.markdown(f"**Día seleccionado:** {dia_nombre}")
-st.markdown(f"**Es fin de semana:** {es_finde_texto}")
+st.markdown(f"<div style='margin-top:5px; margin-bottom:5px; font-weight:bold;'>Día seleccionado: {dia_nombre}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='margin-bottom:10px;'>Es fin de semana: {es_finde_texto}</div>", unsafe_allow_html=True)
+
 
 # -----------------------------
 # MES + ESTACIÓN DEL AÑO
 # -----------------------------
 
-# Mapeo de meses
 meses = {
     "Enero": 1,
     "Febrero": 2,
@@ -152,11 +144,9 @@ meses = {
     "Diciembre": 12
 }
 
-# Selector de mes (menú desplegable)
 mes_nombre = st.selectbox("Mes", list(meses.keys()))
-mes = meses[mes_nombre]  # valor numérico para el modelo
+mes = meses[mes_nombre]
 
-# Cálculo de estación por mes completo
 if mes in [12, 1, 2]:
     estacion = "❄️ Invierno"
 elif mes in [3, 4, 5]:
@@ -166,8 +156,7 @@ elif mes in [6, 7, 8]:
 else:
     estacion = "🍂 Otoño"
 
-# Mostrar estación
-st.markdown(f"**Estación del año:** {estacion}")
+st.markdown(f"<div style='margin-top:5px; margin-bottom:15px; font-weight:bold;'>Estación del año: {estacion}</div>", unsafe_allow_html=True)
 
 
 st.markdown("### 🌡️ Temperaturas por región")
