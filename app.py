@@ -9,6 +9,20 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
+#-----------------------------------------
+# Ruta del modelo
+#-----------------------------------------
+from pathlib import Path
+import joblib
+
+BASE_DIR = Path().resolve()  # raíz del proyecto
+MODEL_PATH = BASE_DIR / "models" / "xgb_model.pkl"
+
+try:
+    model = joblib.load(MODEL_PATH)
+except FileNotFoundError:
+    raise FileNotFoundError(f"No se encontró el modelo en: {MODEL_PATH}")
+
 
 # -----------------------------
 # CONFIG
