@@ -43,11 +43,10 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 # -----------------------------
 # PARTE 1: Inputs de demanda
 # -----------------------------
-st.title("⚡ Predicción de Demanda Eléctrica")
-st.subheader("Introduce los valores")
+st.markdown("<h1>Predicción de Demanda Eléctrica ⚡</h1>", unsafe_allow_html=True)
+st.markdown("<h3>Introduce los valores</h3>", unsafe_allow_html=True)
 
 def float_input_safe(label, ejemplo=27000):
-    # Contenedor horizontal
     col_input, col_ej = st.columns([0.2, 0.4])
 
     with col_input:
@@ -56,17 +55,15 @@ def float_input_safe(label, ejemplo=27000):
             value="", 
             max_chars=10,
             key=label,
-            help=f"Ej. {ejemplo}"  # ahora la guía está en el tooltip de ayuda
+            help=f"Ej. {ejemplo}"  # guía en tooltip
         )
 
-        # Conversión segura a float
         try:
             val_clean = float(val_str.replace(".", "").replace(",", "")) if val_str else ejemplo
         except:
             val_clean = ejemplo
 
     with col_ej:
-        # Columna vacía, ya no necesitamos la leyenda fuera de la caja
         st.write("")
 
     return val_clean
@@ -78,17 +75,16 @@ media_movil_24h = float_input_safe("Media móvil 24h")
 
 
 # -----------------------------
-# Slider interactivo de hora con color fijo azul cobalto
+# Slider interactivo de hora
 # -----------------------------
 col1, col2 = st.columns([2,1])
 
 with col1:
-    # Slider de hora
     hora_real = st.slider(
         "Hora del día",
         min_value=0,
         max_value=23,
-        value=18,  # valor por defecto = 6 PM
+        value=18,
         step=1
     )
 
@@ -102,13 +98,12 @@ div[data-baseweb="slider"] input[type="range"] {{
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; color:#0047AB; font-weight:bold;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; font-weight:bold; font-size:18px; color:#0047AB;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
 
 
 # -----------------------------
 # Slider para el día de la semana
 # -----------------------------
-
 dias_semana_nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 
 with col1:
@@ -116,23 +111,21 @@ with col1:
         "Día de la semana",
         min_value=1,
         max_value=7,
-        value=3,  # Por defecto Miércoles
+        value=3,
         step=1
     )
 
 dia_nombre = dias_semana_nombres[dia_semana - 1]
-
 es_finde_num = 1 if dia_semana in [6, 7] else 0
 es_finde_texto = "Sí" if es_finde_num == 1 else "No"
 
-st.markdown(f"<div style='margin-top:5px; margin-bottom:5px; font-weight:bold;'>Día seleccionado: {dia_nombre}</div>", unsafe_allow_html=True)
-st.markdown(f"<div style='margin-bottom:10px;'>Es fin de semana: {es_finde_texto}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='margin-top:5px; margin-bottom:5px; font-weight:bold; font-size:16px;'>Día seleccionado: {dia_nombre}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='margin-bottom:10px; font-weight:bold; font-size:16px;'>Es fin de semana: {es_finde_texto}</div>", unsafe_allow_html=True)
 
 
 # -----------------------------
 # MES + ESTACIÓN DEL AÑO
 # -----------------------------
-
 meses = {
     "Enero": 1,
     "Febrero": 2,
@@ -162,13 +155,13 @@ elif mes in [6, 7, 8]:
 else:
     estacion = "🍂 Otoño"
 
-st.markdown(f"<div style='margin-top:5px; margin-bottom:15px; font-weight:bold;'>Estación del año: {estacion}</div>", unsafe_allow_html=True)
+st.markdown(f"<div style='margin-top:5px; margin-bottom:15px; font-weight:bold; font-size:16px;'>{estacion}</div>", unsafe_allow_html=True)
 
 
 # -----------------------------
 # TEMPERATURA SEGÚN REGIÓN
 # -----------------------------
-st.markdown("### 🌡️ Temperaturas por región")
+st.markdown("<h3>Temperaturas por región 🌡️ </h3>", unsafe_allow_html=True)
 
 temp_valores = list(range(-15, 49))
 
