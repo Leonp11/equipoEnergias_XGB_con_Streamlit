@@ -172,19 +172,23 @@ st.markdown(f"<div style='margin-top:5px; margin-bottom:15px; font-weight:bold;'
 
 st.markdown("### 🌡️ Temperaturas por región")
 
-# Creamos 3 columnas para distribuir los inputs
+# Rango de temperaturas
+temp_valores = list(range(-15, 49))  # -15 a 48ºC
+
+# Columnas para hacer el layout compacto
 col1, col2, col3 = st.columns(3)
 
 with col1:
-    temp_mad = st.number_input("Región Central (ºC)", value=30.0)
-    temp_val = st.number_input("Región Sureste (ºC)", value=29.0)
+    temp_mad = st.selectbox("Región Central (ºC)", temp_valores, index=temp_valores.index(30))
+    temp_val = st.selectbox("Región Sureste (ºC)", temp_valores, index=temp_valores.index(29))
 
 with col2:
-    temp_pv = st.number_input("Región Norte (ºC)", value=22.0)
-    temp_cat = st.number_input("Región Noreste (ºC)", value=28.0)
+    temp_pv = st.selectbox("Región Norte (ºC)", temp_valores, index=temp_valores.index(22))
+    temp_cat = st.selectbox("Región Noreste (ºC)", temp_valores, index=temp_valores.index(28))
 
 with col3:
-    temp_and = st.number_input("Región Sur (ºC)", value=33.0)
+    temp_and = st.selectbox("Región Sur (ºC)", temp_valores, index=temp_valores.index(33))
+
 
 
 # -----------------------------
