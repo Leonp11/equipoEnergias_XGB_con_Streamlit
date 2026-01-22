@@ -76,7 +76,7 @@ media_movil_24h = float_input_safe("Media móvil 24h")
 # Slider interactivo de hora con color fijo naranja eléctrico y emoji
 # -----------------------------
 
-col1, col2 = st.columns([2,1])
+col1, col2 = st.columns([1,1])
 
 with col1:
     hora_real = st.slider(
