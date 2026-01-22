@@ -107,12 +107,48 @@ div[data-baseweb="slider"] input[type="range"] {{
 st.markdown(f"**Hora seleccionada:** {hora_real}h {icono}")
 
 
-mes = st.number_input("Mes", min_value=1, max_value=12, value=1, step=1)
-
 es_finde = st.selectbox("¿Es fin de semana?", ["Sí", "No"])
 es_finde_num = 1 if es_finde == "Sí" else 0
 
 dia_semana = st.number_input("Día de la semana (0=Lunes)", min_value=0, max_value=6, value=2, step=1)
+
+# -----------------------------
+# MES + ESTACIÓN DEL AÑO
+# -----------------------------
+
+# Mapeo de meses
+meses = {
+    "Enero": 1,
+    "Febrero": 2,
+    "Marzo": 3,
+    "Abril": 4,
+    "Mayo": 5,
+    "Junio": 6,
+    "Julio": 7,
+    "Agosto": 8,
+    "Septiembre": 9,
+    "Octubre": 10,
+    "Noviembre": 11,
+    "Diciembre": 12
+}
+
+# Selector de mes (menú desplegable)
+mes_nombre = st.selectbox("Mes", list(meses.keys()))
+mes = meses[mes_nombre]  # valor numérico para el modelo
+
+# Cálculo de estación por mes completo
+if mes in [12, 1, 2]:
+    estacion = "❄️ Invierno"
+elif mes in [3, 4, 5]:
+    estacion = "🌱 Primavera"
+elif mes in [6, 7, 8]:
+    estacion = "☀️ Verano"
+else:
+    estacion = "🍂 Otoño"
+
+# Mostrar estación
+st.markdown(f"**Estación del año:** {estacion}")
+
 
 st.markdown("### 🌡️ Temperaturas por región")
 temp_mad = st.number_input("Región Central (ºC)", value=30.0)
