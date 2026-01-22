@@ -16,19 +16,6 @@ st.set_page_config(
     page_title="Predicción Demanda Eléctrica",
     layout="centered"
 )
-
-#-----------------------------------------
-# Ruta del modelo
-#-----------------------------------------
-BASE_DIR = Path().resolve()  # raíz del proyecto
-MODEL_PATH = BASE_DIR / "models" / "xgb_model.pkl"
-
-try:
-    model = joblib.load(MODEL_PATH)
-    st.success("✅ Modelo cargado correctamente")
-except FileNotFoundError:
-    st.error(f"❌ No se encontró el modelo en: {MODEL_PATH}")
-
 # --------------------------------
 # SIDEBAR: Selección de sección
 # --------------------------------
