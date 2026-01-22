@@ -1,5 +1,5 @@
 #-----------------------------------------
-# IMPORTS
+# Los IMPORTS
 #-----------------------------------------
 import streamlit as st
 import pandas as pd
@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
 
+
 # -----------------------------
 # CONFIG
 # -----------------------------
@@ -16,11 +17,14 @@ st.set_page_config(
     page_title="Predicción Demanda Eléctrica",
     layout="centered"
 )
+
+
 # --------------------------------
 # SIDEBAR: Selección de sección
 # --------------------------------
 st.sidebar.title("Menú")
 seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
+
 
 # -----------------------------
 # PARTE 1: Inputs de demanda
@@ -59,13 +63,9 @@ demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
 media_movil_24h = float_input_safe("Media móvil 24h")
 
 
-import streamlit as st
-
 # -----------------------------
-# Slider interactivo de hora con color fijo azul cobalto y emoji
+# Slider interactivo de hora con color fijo azul cobalto
 # -----------------------------
-
-# Columnas para unificar ancho de sliders (2/1)
 col1, col2 = st.columns([2,1])
 
 with col1:
@@ -78,10 +78,8 @@ with col1:
         step=1
     )
 
-# Emoji dinámico según día/noche
 icono = "☀️" if 6 <= hora_real <= 18 else "🌙"
 
-# Color fijo del slider: Azul cobalto (#0047AB)
 st.markdown(f"""
 <style>
 div[data-baseweb="slider"] input[type="range"] {{
@@ -90,12 +88,11 @@ div[data-baseweb="slider"] input[type="range"] {{
 </style>
 """, unsafe_allow_html=True)
 
-# Mostrar la hora seleccionada con emoji
 st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; color:#0047AB; font-weight:bold;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
 
 
 # -----------------------------
-# Slider para el día de la semana (mismo tamaño)
+# Slider para el día de la semana
 # -----------------------------
 
 dias_semana_nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
@@ -109,14 +106,11 @@ with col1:
         step=1
     )
 
-# Nombre del día seleccionado
 dia_nombre = dias_semana_nombres[dia_semana - 1]
 
-# Calcular si es fin de semana
 es_finde_num = 1 if dia_semana in [6, 7] else 0
 es_finde_texto = "Sí" if es_finde_num == 1 else "No"
 
-# Mostrar información del día
 st.markdown(f"<div style='margin-top:5px; margin-bottom:5px; font-weight:bold;'>Día seleccionado: {dia_nombre}</div>", unsafe_allow_html=True)
 st.markdown(f"<div style='margin-bottom:10px;'>Es fin de semana: {es_finde_texto}</div>", unsafe_allow_html=True)
 
@@ -140,12 +134,11 @@ meses = {
     "Diciembre": 12
 }
 
-col1, col2 = st.columns([0.2,0.4])  # aquí 1:1, así col1 tiene la mitad
+col1, col2 = st.columns([0.2,0.4])
 with col1:
     mes_nombre = st.selectbox("Mes", list(meses.keys()))
     mes = meses[mes_nombre]
 
-# Cálculo de estación
 if mes in [12, 1, 2]:
     estacion = "❄️ Invierno"
 elif mes in [3, 4, 5]:
@@ -155,16 +148,16 @@ elif mes in [6, 7, 8]:
 else:
     estacion = "🍂 Otoño"
 
-# Mostrar estación
 st.markdown(f"<div style='margin-top:5px; margin-bottom:15px; font-weight:bold;'>Estación del año: {estacion}</div>", unsafe_allow_html=True)
 
 
+# -----------------------------
+# TEMPERATURA SEGÚN REGIÓN
+# -----------------------------
 st.markdown("### 🌡️ Temperaturas por región")
 
-# Rango de temperaturas
-temp_valores = list(range(-15, 49))  # -15 a 48ºC
+temp_valores = list(range(-15, 49))
 
-# Columnas para hacer el layout compacto
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -177,7 +170,6 @@ with col2:
 
 with col3:
     temp_and = st.selectbox("Región Sur (ºC)", temp_valores, index=temp_valores.index(33))
-
 
 
 # -----------------------------
@@ -219,4 +211,4 @@ if st.button("Calcular"):
 # -----------------------------
 if seccion == "EDA":
     st.title("📊 Análisis Exploratorio de Datos (EDA)")
-    st.info("Aquí podrás cargar y visualizar datos del proyecto, agregar gráficas y resúmenes estadísticos.")
+    st.info("inserte aquí verborrea y grafiquitos.")
