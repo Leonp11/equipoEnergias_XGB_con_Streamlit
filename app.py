@@ -211,7 +211,21 @@ X_input = X_input[model.feature_names_in_]
 # -----------------------------
 if st.button("Calcular"):
     pred = model.predict(X_input)[0]
-    st.success(f"📈 La predicción de demanda real es de **{pred:,.0f} MW**")
+    st.markdown(
+        f"""
+        <div style="
+            background-color:#d4edda;  /* verde tipo success */
+            color:#155724;
+            padding:10px 20px;
+            border-radius:5px;
+            text-align:center;
+        ">
+            <div style="font-size:18px; font-weight:normal;">📈 La predicción de demanda real es de:</div>
+            <div style="font-size:28px; font-weight:bold;">{pred:,.0f} MW</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # -----------------------------
 # SECCIÓN EDA
