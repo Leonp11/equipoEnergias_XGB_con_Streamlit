@@ -17,36 +17,46 @@ try:
 except FileNotFoundError:
     raise FileNotFoundError(f"No se encontró el modelo en: {MODEL_PATH}")
 
-# -----------------------------------------
-# Configuración de la página
-# -----------------------------------------
+# -----------------------------
+# CONFIG
+# -----------------------------
 st.set_page_config(
     page_title="Predicción Demanda Eléctrica",
     layout="centered"
 )
 
-# -----------------------------------------
-# Sidebar
-# -----------------------------------------
+# --------------------------------
+# SIDEBAR: Selección de sección
+# --------------------------------
 st.sidebar.title("Menú")
 seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 
-# -----------------------------------------
-# Inputs del usuario
-# -----------------------------------------
+# -----------------------------
+# PARTE 1: Inputs de demanda
+# -----------------------------
 st.markdown("<h1>Predicción de Demanda Eléctrica ⚡</h1>", unsafe_allow_html=True)
 st.markdown("<h3>Introduce los valores</h3>", unsafe_allow_html=True)
 
 def float_input_safe(label, ejemplo=27000):
     col_input, col_ej = st.columns([0.2, 0.4])
+
     with col_input:
-        val_str = st.text_input(f"{label} (MW)", value="", max_chars=10, key=label, help=f"Ej. {ejemplo}")
+        val_str = st.text_input(
+            f"{label} (MW)", 
+            value="", 
+            max_chars=10,
+            key=label,
+            help=f"Ej. {ejemplo}"
+        )
+
         try:
             val_clean = float(val_str.replace(".", "").replace(",", "")) if val_str else ejemplo
         except:
             val_clean = ejemplo
+
     with col_ej:
         st.write("")
+
     return val_clean
 
 demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
@@ -55,41 +65,70 @@ demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
 media_movil_24h = float_input_safe("Media móvil 24h")
 
 # -----------------------------
-# Slider interactivo de hora y día
+# Slider interactivo de hora
 # -----------------------------
 col1, col2 = st.columns([2,1])
 with col1:
-    hora_real = st.slider("Hora del día", 0, 23, 18, 1)
-
+    hora_real = st.slider(
+        "Hora del día",
+        min_value=0,
+        max_value=23,
+        value=18,
+        step=1
+    )
 icono = "☀️" if 6 <= hora_real <= 18 else "🌙"
-st.markdown(f"<div style='margin-top:5px; font-weight:bold; font-size:18px;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
+st.markdown(f"""
+<style>
+div[data-baseweb="slider"] input[type="range"] {{
+    accent-color: #0047AB;
+}}
+</style>
+""", unsafe_allow_html=True)
+st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; font-weight:bold; font-size:18px; color:#155724;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
 
+# -----------------------------
+# Slider para el día de la semana
+# -----------------------------
 dias_semana_nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
 with col1:
-    dia_semana = st.slider("Día de la semana", 1, 7, 3, 1)
+    dia_semana = st.slider(
+        "Día de la semana",
+        min_value=1,
+        max_value=7,
+        value=3,
+        step=1
+    )
 dia_nombre = dias_semana_nombres[dia_semana - 1]
-es_finde_num = 1 if dia_semana in [6,7] else 0
-es_finde_texto = "Sí" if es_finde_num==1 else "No"
-st.markdown(f"<div style='font-weight:bold; font-size:16px;'>Día seleccionado: {dia_nombre}</div>", unsafe_allow_html=True)
+es_finde_num = 1 if dia_semana in [6, 7] else 0
+es_finde_texto = "Sí" if es_finde_num == 1 else "No"
+st.markdown(f"<div style='margin-top:5px; margin-bottom:5px; font-weight:bold; font-size:16px;'>Día seleccionado: {dia_nombre}</div>", unsafe_allow_html=True)
 st.markdown(f"<div style='margin-bottom:10px; font-weight:bold; font-size:16px;'>Es fin de semana: {es_finde_texto}</div>", unsafe_allow_html=True)
 
 # -----------------------------
-# Mes y estación
+# MES + ESTACIÓN DEL AÑO
 # -----------------------------
-meses = {"Enero":1,"Febrero":2,"Marzo":3,"Abril":4,"Mayo":5,"Junio":6,"Julio":7,"Agosto":8,"Septiembre":9,"Octubre":10,"Noviembre":11,"Diciembre":12}
+meses = {
+    "Enero": 1, "Febrero": 2, "Marzo": 3, "Abril": 4,
+    "Mayo": 5, "Junio": 6, "Julio": 7, "Agosto": 8,
+    "Septiembre": 9, "Octubre": 10, "Noviembre": 11, "Diciembre": 12
+}
 col1, col2 = st.columns([0.2,0.4])
 with col1:
     mes_nombre = st.selectbox("Mes", list(meses.keys()))
     mes = meses[mes_nombre]
 
-if mes in [12,1,2]: estacion = "❄️ Invierno"
-elif mes in [3,4,5]: estacion = "🌱 Primavera"
-elif mes in [6,7,8]: estacion = "☀️ Verano"
-else: estacion = "🍂 Otoño"
+if mes in [12, 1, 2]:
+    estacion = "❄️ Invierno"
+elif mes in [3, 4, 5]:
+    estacion = "🌱 Primavera"
+elif mes in [6, 7, 8]:
+    estacion = "☀️ Verano"
+else:
+    estacion = "🍂 Otoño"
 st.markdown(f"<div style='margin-top:5px; margin-bottom:15px; font-weight:bold; font-size:16px;'>{estacion}</div>", unsafe_allow_html=True)
 
 # -----------------------------
-# Temperaturas por región
+# TEMPERATURA SEGÚN REGIÓN
 # -----------------------------
 st.markdown("<h3>Temperaturas por región 🌡️ </h3>", unsafe_allow_html=True)
 temp_valores = list(range(-15, 49))
@@ -104,7 +143,7 @@ with col3:
     temp_and = st.selectbox("Región Sur (ºC)", temp_valores, index=temp_valores.index(33))
 
 # -----------------------------
-# DataFrame de entrada para el modelo
+# DataFrame para el modelo
 # -----------------------------
 X_input = pd.DataFrame([{
     "demanda_lag_1": demanda_lag_1,
@@ -121,23 +160,34 @@ X_input = pd.DataFrame([{
     "Cataluna_temperature_2m": temp_cat,
     "Andalucia_temperature_2m": temp_and
 }])
-
 for col in model.feature_names_in_:
     if col not in X_input.columns:
         X_input[col] = 0.0
 X_input = X_input[model.feature_names_in_]
 
 # -----------------------------
-# Predicción
+# Cargar dataset histórico para comparación
+# -----------------------------
+HIST_PATH = BASE_DIR / "data" / "processed" / "dataset_consulta.csv"
+try:
+    df_hist = pd.read_csv(HIST_PATH)
+    df_hist["fecha"] = pd.to_datetime(df_hist["fecha"])
+    df_hist["dia_semana"] = df_hist["fecha"].dt.weekday + 1
+except FileNotFoundError:
+    st.error(f"No se encontró el dataset histórico en: {HIST_PATH}")
+    df_hist = pd.DataFrame()
+
+anos_disponibles = df_hist["year"].unique() if not df_hist.empty else []
+
+# -----------------------------
+# Predicción + comparación
 # -----------------------------
 if st.button("Calcular"):
     pred = model.predict(X_input)[0]
-
-    # Mostrar predicción
     st.markdown(
         f"""
         <div style="
-            background-color:#d4edda;  /* verde tipo success */
+            background-color:#d4edda;
             color:#155724;
             padding:10px 20px;
             border-radius:5px;
@@ -150,37 +200,23 @@ if st.button("Calcular"):
         unsafe_allow_html=True
     )
 
-    # -----------------------------
-    # Comparación con años históricos aleatorios
-    # -----------------------------
-    # Filtrar por las condiciones seleccionadas
-    # df_hist debe ser tu dataset histórico con columna 'year', 'mes', 'hora', 'dia_semana', 'demanda_real'
+    if not df_hist.empty and len(anos_disponibles) > 1:
+        # Elegir 2 años aleatorios distintos a 2016
+        años_random = random.sample([y for y in anos_disponibles if y != 2016], 2)
 
-    import random
+        for año in años_random:
+            comparacion = df_hist[
+                (df_hist["year"] == año) &
+                (df_hist["mes"] == mes) &
+                (df_hist["dia_semana"] == dia_semana) &
+                (df_hist["hora"] == hora_real)
+            ]
+            if not comparacion.empty:
+                valor_real = comparacion["demanda_real"].values[0]
+                st.markdown(f"Año {año}: Demanda real fue {valor_real:,.0f} MW")
+            else:
+                st.markdown(f"Año {año}: No hay datos disponibles para la misma fecha y hora.")
 
-    # Obtener años únicos
-    anos_disponibles = df_hist["year"].unique()
-
-    # Elegir 2 años aleatorios distintos
-    anos_elegidos = random.sample(list(anos_disponibles), 2)
-
-    comparaciones = []
-    for ano in anos_elegidos:
-        df_filtro = df_hist[
-            (df_hist["year"] == ano) &
-            (df_hist["mes"] == mes) &
-            (df_hist["hora"] == hora_real) &
-            (df_hist["dia_semana"] == dia_semana)
-        ]
-        if not df_filtro.empty:
-            comparaciones.append((ano, df_filtro["demanda_real"].values[0]))
-
-    # Mostrar resultados
-    st.markdown(f"### Comparación con años históricos")
-    for ano, valor_real in comparaciones:
-        diferencia = pred - valor_real
-        signo = "↑" if diferencia > 0 else "↓"
-        st.markdown(f"Año {ano}: {valor_real:,.0f} MW ({signo} {abs(diferencia):,.0f} MW respecto a la predicción)")
 
 
 # -----------------------------
