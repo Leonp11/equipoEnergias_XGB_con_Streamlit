@@ -1,10 +1,13 @@
 # -----------------------------------------
-# Los IMPUTS
+# Los IMPORTS
 # -----------------------------------------
+
 from pathlib import Path
 import joblib
 import pandas as pd
 import streamlit as st
+import numpy as np
+import random
 
 BASE_DIR = Path().resolve()  # raíz del proyecto
 MODEL_PATH = BASE_DIR / "models" / "xgb_model.pkl"
@@ -125,59 +128,59 @@ for col in model.feature_names_in_:
 X_input = X_input[model.feature_names_in_]
 
 # -----------------------------
-# Predicción + comparación histórica
+# Predicción
 # -----------------------------
 if st.button("Calcular"):
     pred = model.predict(X_input)[0]
 
-    st.markdown(f"""
+    # Mostrar predicción
+    st.markdown(
+        f"""
         <div style="
-            background-color:#d4edda;
+            background-color:#d4edda;  /* verde tipo success */
             color:#155724;
             padding:10px 20px;
             border-radius:5px;
             text-align:center;
         ">
-            <div style="font-size:18px;">La predicción de demanda real es de:</div>
+            <div style="font-size:18px; font-weight:normal;">La predicción de demanda real es de:</div>
             <div style="font-size:28px; font-weight:bold;">{pred:,.0f} MW</div>
         </div>
-    """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True
+    )
 
     # -----------------------------
-    # Cargar dataset histórico y crear dia_semana
+    # Comparación con años históricos aleatorios
     # -----------------------------
-    DATA_PATH = BASE_DIR / "data" / "processed" / "dataset_consulta.csv"
-    df_hist = pd.read_csv(DATA_PATH)
-    df_hist["fecha"] = pd.to_datetime(df_hist["fecha"])
-    df_hist["dia_semana"] = df_hist["fecha"].dt.dayofweek + 1
+    # Filtrar por las condiciones seleccionadas
+    # df_hist debe ser tu dataset histórico con columna 'year', 'mes', 'hora', 'dia_semana', 'demanda_real'
 
-    # Filtrar la fecha/hora/mes/dia_semana seleccionados
-    df_comparar = df_hist[
-        (df_hist["mes"] == mes) &
-        (df_hist["hora"] == hora_real) &
-        (df_hist["dia_semana"] == dia_semana)
-    ]
+    import random
 
-    if not df_comparar.empty:
-        demanda_real_hist = df_comparar["demanda_real"].values[0]
-        fecha_hist = df_comparar["fecha"].values[0]
-        diferencia = pred - demanda_real_hist
+    # Obtener años únicos
+    anos_disponibles = df_hist["year"].unique()
 
-        st.markdown(f"""
-            <div style="
-                background-color:#fff3cd;
-                color:#856404;
-                padding:10px 20px;
-                border-radius:5px;
-                margin-top:10px;
-            ">
-                <div>En esta fecha/hora del año {pd.to_datetime(fecha_hist).year} la demanda fue de <b>{demanda_real_hist:,.0f} MW</b>.</div>
-                <div>Diferencia con la predicción: <b>{diferencia:,.0f} MW</b> ({'mayor' if diferencia>0 else 'menor'})</div>
-            </div>
-        """, unsafe_allow_html=True)
-    else:
-        st.warning("No se encontró un registro histórico exacto para esta fecha/hora/día.")
+    # Elegir 2 años aleatorios distintos
+    anos_elegidos = random.sample(list(anos_disponibles), 2)
 
+    comparaciones = []
+    for ano in anos_elegidos:
+        df_filtro = df_hist[
+            (df_hist["year"] == ano) &
+            (df_hist["mes"] == mes) &
+            (df_hist["hora"] == hora_real) &
+            (df_hist["dia_semana"] == dia_semana)
+        ]
+        if not df_filtro.empty:
+            comparaciones.append((ano, df_filtro["demanda_real"].values[0]))
+
+    # Mostrar resultados
+    st.markdown(f"### Comparación con años históricos")
+    for ano, valor_real in comparaciones:
+        diferencia = pred - valor_real
+        signo = "↑" if diferencia > 0 else "↓"
+        st.markdown(f"Año {ano}: {valor_real:,.0f} MW ({signo} {abs(diferencia):,.0f} MW respecto a la predicción)")
 
 
 # -----------------------------
