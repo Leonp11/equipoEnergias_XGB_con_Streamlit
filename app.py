@@ -184,39 +184,26 @@ anos_disponibles = df_hist["year"].unique() if not df_hist.empty else []
 # -----------------------------
 if st.button("Calcular"):
     pred = model.predict(X_input)[0]
-
-    contenido_html = f"""
-    <div style="
-        background-color:#fff3cd;  /* amarillo claro tipo warning */
-        color:#856404;              /* contraste ocre */
-        padding:15px 25px;
-        border-radius:5px;
-        line-height:1.6;
-    ">
-        <div style="font-size:18px;">La predicción de demanda real es de:</div>
-        <div style="font-size:28px; font-weight:bold;">{pred:,.0f} MW</div>
-    """
+    st.markdown(
+        f"""
+        <div style="
+            background-color:#d4edda;
+            color:#155724;
+            padding:10px 20px;
+            border-radius:5px;
+            text-align:center;
+        ">
+            <div style="font-size:18px; font-weight:normal;">La predicción de demanda real es de:</div>
+            <div style="font-size:28px; font-weight:bold;">{pred:,.0f} MW</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     if not df_hist.empty and len(anos_disponibles) > 1:
         # Elegir 2 años aleatorios distintos a 2016
         años_random = random.sample([y for y in anos_disponibles if y != 2016], 2)
 
-        # Comparación con 2016
-        comparacion_2016 = df_hist[
-            (df_hist["year"] == 2016) &
-            (df_hist["mes"] == mes) &
-            (df_hist["dia_semana"] == dia_semana) &
-            (df_hist["hora"] == hora_real)
-        ]
-        if not comparacion_2016.empty:
-            valor_2016 = comparacion_2016["demanda_real"].values[0]
-            contenido_html += f"""
-            <div style="font-size:16px; margin-top:8px;">
-                En esta fecha y hora del año <strong>2016</strong> la demanda fue de <strong>{valor_2016:,.0f} MW</strong>.
-            </div>
-            """
-
-        # Comparación con los 2 años aleatorios
         for año in años_random:
             comparacion = df_hist[
                 (df_hist["year"] == año) &
@@ -226,21 +213,10 @@ if st.button("Calcular"):
             ]
             if not comparacion.empty:
                 valor_real = comparacion["demanda_real"].values[0]
-                contenido_html += f"""
-                <div style="font-size:16px;">
-                    Con las mismas variables pero del año <strong>{año}</strong> la demanda fue de <strong>{valor_real:,.0f} MW</strong>.
-                </div>
-                """
+                st.markdown(f"Año {año}: Demanda real fue {valor_real:,.0f} MW")
             else:
-                contenido_html += f"""
-                <div style="font-size:16px;">
-                    Año <strong>{año}</strong>: No hay datos disponibles para la misma fecha y hora.
-                </div>
-                """
+                st.markdown(f"Año {año}: No hay datos disponibles para la misma fecha y hora.")
 
-    contenido_html += "</div>"
-
-    st.markdown(contenido_html, unsafe_allow_html=True)
 
 
 # -----------------------------
