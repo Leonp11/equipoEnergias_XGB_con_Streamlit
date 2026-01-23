@@ -221,7 +221,7 @@ if st.button("Calcular"):
                         border-radius:5px;
                         margin-bottom:5px;
                     ">
-                        Año {año}: Demanda real fue {valor_real:,.0f} MW
+                        En esta fecha y hora del año {año} la demanda real fue de {valor_real:,.0f} MW
                     </div>
                     """,
                     unsafe_allow_html=True
@@ -236,13 +236,11 @@ if st.button("Calcular"):
                         border-radius:5px;
                         margin-bottom:5px;
                     ">
-                        Año {año}: No hay datos disponibles para la misma fecha y hora.
+                        En esta fecha y hora del año {año} no hay datos disponibles.
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
-
-
 
 # -----------------------------
 # SECCIÓN EDA
