@@ -211,6 +211,10 @@ X_input = X_input[model.feature_names_in_]
 # -----------------------------
 if st.button("Calcular"):
     pred = model.predict(X_input)[0]
+
+    # -----------------------------
+    # Mostrar predicción
+    # -----------------------------
     st.markdown(
         f"""
         <div style="
@@ -226,6 +230,45 @@ if st.button("Calcular"):
         """,
         unsafe_allow_html=True
     )
+
+    # -----------------------------
+    # Comparación con valor histórico
+    # -----------------------------
+    DATA_PATH = BASE_DIR / "data" / "processed" / "dataset_consulta.csv"
+    df_hist = pd.read_csv(DATA_PATH, parse_dates=["fecha"])
+
+    # Filtrar por mismo mes, día de la semana y hora
+    df_comparar = df_hist[
+        (df_hist["mes"] == mes) &
+        (df_hist["hora"] == hora_real) &
+        (df_hist["dia_semana"] == dia_semana)
+    ]
+
+    if not df_comparar.empty:
+        valor_historico = df_comparar.iloc[0]["demanda_real"]
+        diferencia = pred - valor_historico
+        signo = "más alta" if diferencia > 0 else "más baja" if diferencia < 0 else "igual"
+
+        st.markdown(
+            f"""
+            <div style="
+                background-color:#cce5ff;  /* azul tipo info */
+                color:#004085;
+                padding:10px 20px;
+                border-radius:5px;
+                text-align:center;
+                margin-top:10px;
+            ">
+                <div style="font-size:16px;">En esta fecha y hora, la demanda histórica fue de:</div>
+                <div style="font-size:22px; font-weight:bold;">{valor_historico:,.0f} MW</div>
+                <div style="font-size:16px;">La predicción es {abs(diferencia):,.0f} MW {signo} que el valor histórico.</div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+    else:
+        st.info("No se encontró un valor histórico para esa combinación de mes, día y hora.")
+
 
 # -----------------------------
 # SECCIÓN EDA
