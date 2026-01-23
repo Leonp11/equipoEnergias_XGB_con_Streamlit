@@ -180,9 +180,10 @@ except FileNotFoundError:
 anos_disponibles = df_hist["year"].unique() if not df_hist.empty else []
 
 # -----------------------------
-# Predicción + comparación
+# Predicción + comparación fija
 # -----------------------------
 if st.button("Calcular"):
+    # --- Bloque verde: predicción ---
     pred = model.predict(X_input)[0]
     st.markdown(
         f"""
@@ -200,11 +201,9 @@ if st.button("Calcular"):
         unsafe_allow_html=True
     )
 
-    if not df_hist.empty and len(anos_disponibles) > 1:
-        # Elegir 2 años aleatorios distintos a 2016
-        años_random = random.sample([y for y in anos_disponibles if y != 2016], 2)
-
-        for año in años_random:
+    # --- Bloque amarillo: comparación con años fijos ---
+    if not df_hist.empty:
+        for año in [2022, 2024]:
             comparacion = df_hist[
                 (df_hist["year"] == año) &
                 (df_hist["mes"] == mes) &
@@ -213,9 +212,35 @@ if st.button("Calcular"):
             ]
             if not comparacion.empty:
                 valor_real = comparacion["demanda_real"].values[0]
-                st.markdown(f"Año {año}: Demanda real fue {valor_real:,.0f} MW")
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color:#fff3cd;
+                        color:#856404;
+                        padding:8px 15px;
+                        border-radius:5px;
+                        margin-bottom:5px;
+                    ">
+                        Año {año}: Demanda real fue {valor_real:,.0f} MW
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
             else:
-                st.markdown(f"Año {año}: No hay datos disponibles para la misma fecha y hora.")
+                st.markdown(
+                    f"""
+                    <div style="
+                        background-color:#fff3cd;
+                        color:#856404;
+                        padding:8px 15px;
+                        border-radius:5px;
+                        margin-bottom:5px;
+                    ">
+                        Año {año}: No hay datos disponibles para la misma fecha y hora.
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
 
 
 
