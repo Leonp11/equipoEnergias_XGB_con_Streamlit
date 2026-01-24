@@ -167,7 +167,14 @@ st.markdown(
     unsafe_allow_html=True
 )
 st.markdown(
-    f"<div style='margin-bottom:10px; font-weight:bold; font-size:16px;'>"
+        f"""
+        <div style="
+            margin-top:5px;
+            margin-bottom:20px;
+            font-weight:bold;
+            font-size:18px;
+            color:#f39f18;
+        >"
     f"Es fin de semana: {es_finde_texto}</div>",
     unsafe_allow_html=True
 )
