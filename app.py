@@ -78,25 +78,23 @@ with col1:
         step=1
     )
 
-icono = "☀️" if 6 <= hora_real <= 18 else "🌙"
+    icono = "☀️" if 6 <= hora_real <= 18 else "🌙"
 
-st.markdown(
-    f"""
-    <div style="
-        margin-top:5px;
-        margin-bottom:20px;
-        font-weight:bold;
-        font-size:18px;
-        color:#155724;
-    ">
-        Hora seleccionada: {hora_real}h {icono}
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-# Separador visual suave
-st.markdown("<hr style='margin:15px 0;'>", unsafe_allow_html=True)
+    # Mensaje de hora dentro del mismo bloque
+    st.markdown(
+        f"""
+        <div style="
+            margin-top:5px;
+            margin-bottom:20px;
+            font-weight:bold;
+            font-size:18px;
+            color:#155724;
+        ">
+            Hora seleccionada: {hora_real}h {icono}
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # -----------------------------
 # BLOQUE: Día de la semana
