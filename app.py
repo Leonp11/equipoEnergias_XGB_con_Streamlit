@@ -88,7 +88,7 @@ with col1:
             margin-bottom:20px;
             font-weight:bold;
             font-size:18px;
-            color:#155724;
+            color:#f39f18;
         ">
             Hora seleccionada: {hora_real}h {icono}
         </div>
