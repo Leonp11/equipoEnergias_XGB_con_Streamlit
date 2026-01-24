@@ -65,7 +65,7 @@ def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=
             f"""
             <div style="
                 background-color:{color_actual};
-                color:white;
+                color:darkgrey;
                 padding:3px 10px;
                 border-radius:5px;
                 font-weight:bold;
