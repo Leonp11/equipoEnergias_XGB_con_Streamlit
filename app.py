@@ -32,37 +32,45 @@ st.sidebar.title("Menú")
 seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 
 # -----------------------------
-# PARTE 1: Inputs de demanda
+# PARTE 1: Inputs de demanda con sliders destacados
 # -----------------------------
 st.markdown("<h1>Predicción de Demanda Eléctrica ⚡</h1>", unsafe_allow_html=True)
 st.markdown("<h3>Introduce los valores</h3>", unsafe_allow_html=True)
 
-def float_input_safe(label, ejemplo=27000):
-    col_input, col_ej = st.columns([0.2, 0.4])
+st.markdown(
+    """
+    <div style="
+        background-color:#f39f18;
+        padding:15px;
+        border-radius:10px;
+        margin-bottom:20px;
+    ">
+    """,
+    unsafe_allow_html=True
+)
 
-    with col_input:
-        val_str = st.text_input(
-            f"{label} (MW)", 
-            value="", 
-            max_chars=10,
-            key=label,
-            help=f"Ej. {ejemplo}"
+def demanda_slider(label, valor_inicial=27000, min_val=24000, max_val=50000):
+    col_slider, col_val = st.columns([3,1])
+    with col_slider:
+        val = st.slider(
+            label,
+            min_value=min_val,
+            max_value=max_val,
+            value=valor_inicial,
+            step=100
         )
+    with col_val:
+        st.write(f"{val:,} MW")
+    return val
 
-        try:
-            val_clean = float(val_str.replace(".", "").replace(",", "")) if val_str else ejemplo
-        except:
-            val_clean = ejemplo
+demanda_lag_1 = demanda_slider("Demanda hace 1 hora", 27000)
+demanda_lag_24 = demanda_slider("Demanda hace 24 horas", 27000)
+demanda_lag_168 = demanda_slider("Demanda hace 168 horas", 27000)
+media_movil_24h = demanda_slider("Media móvil 24h", 27000)
 
-    with col_ej:
-        st.write("")
+# Cerrar el bloque visual
+st.markdown("</div>", unsafe_allow_html=True)
 
-    return val_clean
-
-demanda_lag_1 = float_input_safe("Demanda hace 1 hora")
-demanda_lag_24 = float_input_safe("Demanda hace 24 horas")
-demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
-media_movil_24h = float_input_safe("Media móvil 24h")
 
 # -----------------------------
 # BLOQUE: Hora del día
