@@ -48,40 +48,37 @@ def color_por_demanda(val):
     else:  # 41001-47000
         return "#e74c3c"  # rojo
 
-# Función para mostrar slider con bloque coloreado sobre el slider
+# Función para mostrar slider con box de valor a la derecha
 def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=47000):
-    # Slider
-    val = st.slider(
-        label,
-        min_value=min_val,
-        max_value=max_val,
-        value=valor_inicial,
-        step=100
-    )
-    
-    # Color según valor
+    col_slider, col_val = st.columns([3,1])
+    with col_slider:
+        val = st.slider(
+            label,
+            min_value=min_val,
+            max_value=max_val,
+            value=valor_inicial,
+            step=100
+        )
     color_actual = color_por_demanda(val)
-    
-    # Box con valor sobre el slider
-    st.markdown(
-        f"""
-        <div style="
-            background-color:{color_actual};
-            color:black;
-            padding:3px 10px;
-            border-radius:5px;
-            font-weight:bold;
-            font-size:14px;
-            text-align:center;
-            width:90px;
-            margin-bottom:5px;
-        ">
-            {val:,} MW
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-    
+    with col_val:
+        st.markdown(
+            f"""
+            <div style="
+                background-color:{color_actual};
+                color:black;
+                padding:3px 8px;
+                border-radius:5px;
+                font-weight:bold;
+                font-size:14px;
+                text-align:center;
+                width:70px;
+                margin-top:5px;
+            ">
+                {val:,} MW
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     return val
 
 # Bloque principal amarillo 3/4 ancho
@@ -115,7 +112,6 @@ media_movil_24h = demanda_slider_coloreada("Media móvil 24h", 27000)
 
 # Cerrar bloque visual
 st.markdown("</div>", unsafe_allow_html=True)
-
 
 
 # -----------------------------
