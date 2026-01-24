@@ -40,15 +40,15 @@ st.markdown("<h1>Predicción de Demanda Eléctrica ⚡</h1>", unsafe_allow_html=
 def color_por_demanda(val):
     if 24000 <= val <= 31000:
         return "#2ecc71"  # verde
-    elif 31001 <= val <= 38000:
+    elif 31001 <= val <= 36000:
         return "#f1c40f"  # amarillo
-    elif 38001 <= val <= 40000:
+    elif 36001 <= val <= 41000:
         return "#e67e22"  # naranja
     else:  # 40001-50000
         return "#e74c3c"  # rojo
 
 # Función para mostrar slider con bloque coloreado según valor
-def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=50000):
+def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=47000):
     col_slider, col_val = st.columns([3,1])
     with col_slider:
         val = st.slider(
