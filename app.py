@@ -71,7 +71,7 @@ def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=
                 font-weight:bold;
                 font-size:14px;
                 text-align:center;
-                width:80px;
+                width:90px;
             ">
                 {val:,} MW
             </div>
