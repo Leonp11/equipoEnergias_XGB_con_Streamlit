@@ -65,9 +65,10 @@ demanda_lag_168 = float_input_safe("Demanda hace 168 horas")
 media_movil_24h = float_input_safe("Media móvil 24h")
 
 # -----------------------------
-# Slider interactivo de hora
+# BLOQUE: Hora del día
 # -----------------------------
 col1, col2 = st.columns([2,1])
+
 with col1:
     hora_real = st.slider(
         "Hora del día",
@@ -76,18 +77,29 @@ with col1:
         value=18,
         step=1
     )
+
 icono = "☀️" if 6 <= hora_real <= 18 else "🌙"
-st.markdown(f"""
-<style>
-div[data-baseweb="slider"] input[type="range"] {{
-    accent-color: #0047AB;
-}}
-</style>
-""", unsafe_allow_html=True)
-st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; font-weight:bold; font-size:18px; color:#155724;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
+
+st.markdown(
+    f"""
+    <div style="
+        margin-top:5px;
+        margin-bottom:20px;
+        font-weight:bold;
+        font-size:18px;
+        color:#155724;
+    ">
+        Hora seleccionada: {hora_real}h {icono}
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Separador visual suave
+st.markdown("<hr style='margin:15px 0;'>", unsafe_allow_html=True)
 
 # -----------------------------
-# Desplegable para el día de la semana
+# BLOQUE: Día de la semana
 # -----------------------------
 dias_semana_nombres = {
     "Lunes": 1,
@@ -111,7 +123,7 @@ es_finde_num = 1 if dia_semana in [6, 7] else 0
 es_finde_texto = "Sí" if es_finde_num == 1 else "No"
 
 st.markdown(
-    f"<div style='margin-top:5px; margin-bottom:5px; font-weight:bold; font-size:16px;'>"
+    f"<div style='margin-top:5px; font-weight:bold; font-size:16px;'>"
     f"Día seleccionado: {dia_nombre}</div>",
     unsafe_allow_html=True
 )
