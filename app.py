@@ -137,7 +137,7 @@ with col1:
     )
 
 # -----------------------------
-# BLOQUE: Día de la semana
+# BLOQUE: Día de la semana (ancho compacto)
 # -----------------------------
 dias_semana_nombres = {
     "Lunes": 1,
@@ -149,6 +149,7 @@ dias_semana_nombres = {
     "Domingo": 7
 }
 
+col1, col2 = st.columns([0.2, 0.4])  # columna pequeña como “Mes”
 with col1:
     dia_nombre = st.selectbox(
         "Día de la semana",
@@ -170,6 +171,7 @@ st.markdown(
     f"Es fin de semana: {es_finde_texto}</div>",
     unsafe_allow_html=True
 )
+
 
 # -----------------------------
 # MES + ESTACIÓN DEL AÑO
