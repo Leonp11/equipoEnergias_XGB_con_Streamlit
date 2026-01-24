@@ -31,7 +31,6 @@ st.set_page_config(
 st.sidebar.title("Menú")
 seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 
-
 # -----------------------------
 # PARTE 1: Inputs de demanda con sliders destacados
 # -----------------------------
@@ -45,10 +44,10 @@ def color_por_demanda(val):
         return "#f1c40f"  # amarillo
     elif 36001 <= val <= 41000:
         return "#e67e22"  # naranja
-    else:  # 41001-47000
+    else:  # 40001-50000
         return "#e74c3c"  # rojo
 
-# Función para mostrar slider con box de valor a la derecha
+# Función para mostrar slider con bloque coloreado según valor
 def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=47000):
     col_slider, col_val = st.columns([3,1])
     with col_slider:
@@ -61,18 +60,18 @@ def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=
         )
     color_actual = color_por_demanda(val)
     with col_val:
+        # Mostrar valor con bloque de color más compacto
         st.markdown(
             f"""
             <div style="
                 background-color:{color_actual};
                 color:black;
-                padding:3px 8px;
+                padding:3px 10px;
                 border-radius:5px;
                 font-weight:bold;
                 font-size:14px;
                 text-align:center;
-                width:70px;
-                margin-top:5px;
+                width:90px;
             ">
                 {val:,} MW
             </div>
@@ -81,7 +80,7 @@ def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=
         )
     return val
 
-# Bloque principal amarillo 3/4 ancho
+# Crear bloque principal con ancho 3/4 de la página
 st.markdown(
     """
     <div style="
