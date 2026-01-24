@@ -149,7 +149,8 @@ dias_semana_nombres = {
     "Domingo": 7
 }
 
-col1, col2 = st.columns([0.2, 0.4])  # columna pequeña como “Mes”
+# Columna pequeña para que el selectbox quede compacto, igual que "Mes"
+col1, col2 = st.columns([0.2, 0.4])
 with col1:
     dia_nombre = st.selectbox(
         "Día de la semana",
@@ -157,25 +158,39 @@ with col1:
         index=2
     )
 
+# Calcular número de día y si es fin de semana
 dia_semana = dias_semana_nombres[dia_nombre]
 es_finde_num = 1 if dia_semana in [6, 7] else 0
 es_finde_texto = "Sí" if es_finde_num == 1 else "No"
 
+# Mostrar día seleccionado
 st.markdown(
-    f"<div style='margin-top:5px; font-weight:bold; font-size:16px;'>"
-    f"Día seleccionado: {dia_nombre}</div>",
+    f"""
+    <div style="
+        margin-top:5px;
+        margin-bottom:5px;
+        font-weight:bold;
+        font-size:16px;
+    ">
+        Día seleccionado: {dia_nombre}
+    </div>
+    """,
     unsafe_allow_html=True
 )
+
+# Mostrar si es fin de semana
 st.markdown(
-        f"""
-        <div style="
-            margin-top:5px;
-            margin-bottom:20px;
-            font-weight:bold;
-            font-size:18px;
-            color:#f39f18;
-        >"
-    f"Es fin de semana: {es_finde_texto}</div>",
+    f"""
+    <div style="
+        margin-top:5px;
+        margin-bottom:15px;
+        font-weight:bold;
+        font-size:16px;
+        color:#f39f18;
+    ">
+        Es fin de semana: {es_finde_texto}
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
