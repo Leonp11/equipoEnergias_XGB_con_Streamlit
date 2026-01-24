@@ -31,6 +31,7 @@ st.set_page_config(
 st.sidebar.title("Menú")
 seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 
+
 # -----------------------------
 # PARTE 1: Inputs de demanda con sliders destacados
 # -----------------------------
@@ -44,43 +45,46 @@ def color_por_demanda(val):
         return "#f1c40f"  # amarillo
     elif 36001 <= val <= 41000:
         return "#e67e22"  # naranja
-    else:  # 40001-50000
+    else:  # 41001-47000
         return "#e74c3c"  # rojo
 
-# Función para mostrar slider con bloque coloreado según valor
+# Función para mostrar slider con bloque coloreado sobre el slider
 def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=47000):
-    col_slider, col_val = st.columns([3,1])
-    with col_slider:
-        val = st.slider(
-            label,
-            min_value=min_val,
-            max_value=max_val,
-            value=valor_inicial,
-            step=100
-        )
+    # Slider
+    val = st.slider(
+        label,
+        min_value=min_val,
+        max_value=max_val,
+        value=valor_inicial,
+        step=100
+    )
+    
+    # Color según valor
     color_actual = color_por_demanda(val)
-    with col_val:
-        # Mostrar valor con bloque de color más compacto
-        st.markdown(
-            f"""
-            <div style="
-                background-color:{color_actual};
-                color:black;
-                padding:3px 10px;
-                border-radius:5px;
-                font-weight:bold;
-                font-size:14px;
-                text-align:center;
-                width:90px;
-            ">
-                {val:,} MW
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+    
+    # Box con valor sobre el slider
+    st.markdown(
+        f"""
+        <div style="
+            background-color:{color_actual};
+            color:black;
+            padding:3px 10px;
+            border-radius:5px;
+            font-weight:bold;
+            font-size:14px;
+            text-align:center;
+            width:90px;
+            margin-bottom:5px;
+        ">
+            {val:,} MW
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    
     return val
 
-# Crear bloque principal con ancho 3/4 de la página
+# Bloque principal amarillo 3/4 ancho
 st.markdown(
     """
     <div style="
@@ -111,6 +115,7 @@ media_movil_24h = demanda_slider_coloreada("Media móvil 24h", 27000)
 
 # Cerrar bloque visual
 st.markdown("</div>", unsafe_allow_html=True)
+
 
 
 # -----------------------------
