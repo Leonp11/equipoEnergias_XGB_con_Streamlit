@@ -87,22 +87,39 @@ div[data-baseweb="slider"] input[type="range"] {{
 st.markdown(f"<div style='margin-top:5px; margin-bottom:10px; font-weight:bold; font-size:18px; color:#155724;'>Hora seleccionada: {hora_real}h {icono}</div>", unsafe_allow_html=True)
 
 # -----------------------------
-# Slider para el día de la semana
+# Desplegable para el día de la semana
 # -----------------------------
-dias_semana_nombres = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"]
+dias_semana_nombres = {
+    "Lunes": 1,
+    "Martes": 2,
+    "Miércoles": 3,
+    "Jueves": 4,
+    "Viernes": 5,
+    "Sábado": 6,
+    "Domingo": 7
+}
+
 with col1:
-    dia_semana = st.slider(
+    dia_nombre = st.selectbox(
         "Día de la semana",
-        min_value=1,
-        max_value=7,
-        value=3,
-        step=1
+        list(dias_semana_nombres.keys()),
+        index=2
     )
-dia_nombre = dias_semana_nombres[dia_semana - 1]
+
+dia_semana = dias_semana_nombres[dia_nombre]
 es_finde_num = 1 if dia_semana in [6, 7] else 0
 es_finde_texto = "Sí" if es_finde_num == 1 else "No"
-st.markdown(f"<div style='margin-top:5px; margin-bottom:5px; font-weight:bold; font-size:16px;'>Día seleccionado: {dia_nombre}</div>", unsafe_allow_html=True)
-st.markdown(f"<div style='margin-bottom:10px; font-weight:bold; font-size:16px;'>Es fin de semana: {es_finde_texto}</div>", unsafe_allow_html=True)
+
+st.markdown(
+    f"<div style='margin-top:5px; margin-bottom:5px; font-weight:bold; font-size:16px;'>"
+    f"Día seleccionado: {dia_nombre}</div>",
+    unsafe_allow_html=True
+)
+st.markdown(
+    f"<div style='margin-bottom:10px; font-weight:bold; font-size:16px;'>"
+    f"Es fin de semana: {es_finde_texto}</div>",
+    unsafe_allow_html=True
+)
 
 # -----------------------------
 # MES + ESTACIÓN DEL AÑO
