@@ -30,20 +30,21 @@ st.set_page_config(
 # --------------------------------
 st.sidebar.title("Menú")
 seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
+
 # -----------------------------
 # PARTE 1: Inputs de demanda con sliders destacados
 # -----------------------------
 st.markdown("<h1>Predicción de Demanda Eléctrica ⚡</h1>", unsafe_allow_html=True)
 
-# Función para determinar color según valor MW
+# Función para determinar color según valor MW (rangos exactos)
 def color_por_demanda(val):
     if 24000 <= val <= 31000:
         return "#2ecc71"  # verde
-    elif 32000 <= val <= 38000:
+    elif 31001 <= val <= 38000:
         return "#f1c40f"  # amarillo
-    elif 39000 <= val <= 40000:
+    elif 38001 <= val <= 40000:
         return "#e67e22"  # naranja
-    else:  # 41000-50000
+    else:  # 40001-50000
         return "#e74c3c"  # rojo
 
 # Función para mostrar slider con bloque coloreado según valor
@@ -59,16 +60,18 @@ def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=
         )
     color_actual = color_por_demanda(val)
     with col_val:
-        # Mostrar valor con bloque de color dinámico
+        # Mostrar valor con bloque de color dinámico y más compacto
         st.markdown(
             f"""
             <div style="
                 background-color:{color_actual};
                 color:white;
-                padding:5px 15px;
+                padding:3px 10px;
                 border-radius:5px;
                 font-weight:bold;
+                font-size:14px;
                 text-align:center;
+                width:80px;
             ">
                 {val:,} MW
             </div>
@@ -77,7 +80,7 @@ def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=
         )
     return val
 
-# Crear bloque principal con ancho 3/4 de la página
+# Bloque amarillo de 3/4 de ancho
 st.markdown(
     """
     <div style="
@@ -95,10 +98,8 @@ st.markdown(
 demanda_lag_1 = demanda_slider_coloreada("Demanda hace 1 hora", 27000)
 demanda_lag_24 = demanda_slider_coloreada("Demanda hace 24 horas", 27000)
 demanda_lag_168 = demanda_slider_coloreada("Demanda hace 168 horas", 27000)
-media_movil_24h = demanda_slider_coloreada("Media móvil 24h", 27000)
+media_movil_24h = dem
 
-# Cerrar bloque visual
-st.markdown("</div>", unsafe_allow_html=True)
 
 # -----------------------------
 # BLOQUE: Hora del día
