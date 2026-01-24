@@ -60,7 +60,7 @@ def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=
         )
     color_actual = color_por_demanda(val)
     with col_val:
-        # Mostrar valor con bloque de color dinámico y más compacto
+        # Mostrar valor con bloque de color más compacto
         st.markdown(
             f"""
             <div style="
@@ -80,7 +80,7 @@ def demanda_slider_coloreada(label, valor_inicial=27000, min_val=24000, max_val=
         )
     return val
 
-# Bloque amarillo de 3/4 de ancho
+# Crear bloque principal con ancho 3/4 de la página
 st.markdown(
     """
     <div style="
@@ -98,7 +98,10 @@ st.markdown(
 demanda_lag_1 = demanda_slider_coloreada("Demanda hace 1 hora", 27000)
 demanda_lag_24 = demanda_slider_coloreada("Demanda hace 24 horas", 27000)
 demanda_lag_168 = demanda_slider_coloreada("Demanda hace 168 horas", 27000)
-media_movil_24h = dem
+media_movil_24h = demanda_slider_coloreada("Media móvil 24h", 27000)
+
+# Cerrar bloque visual
+st.markdown("</div>", unsafe_allow_html=True)
 
 
 # -----------------------------
