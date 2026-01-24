@@ -94,6 +94,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+# Reducir tamaño de todos los sliders
+st.markdown("""
+<style>
+div[data-baseweb="slider"] {
+    width: 70% !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
 # Sliders
 demanda_lag_1 = demanda_slider_coloreada("Demanda hace 1 hora", 27000)
 demanda_lag_24 = demanda_slider_coloreada("Demanda hace 24 horas", 27000)
