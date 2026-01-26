@@ -38,7 +38,7 @@ st.markdown(
     """
     <div style="
         font-weight: bold;
-        font-size: 22px;
+        font-size: 26px;
     ">
         ⚡ Predicción de Demanda Eléctrica ⚡
     </div>
