@@ -34,7 +34,19 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 # -----------------------------
 # PARTE 1: Inputs de demanda con sliders destacados
 # -----------------------------
-st.markdown("<h1>Predicción de Demanda Eléctrica ⚡</h1>", unsafe_allow_html=True)
+st.markdown(
+    """
+    <div style="
+        text-align: center;
+        font-weight: bold;
+        font-size: 22px;
+    ">
+        ⚡ Predicción de Demanda Eléctrica ⚡
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 
 # Función para determinar color según valor MW (rangos exactos)
 def color_por_demanda(val):
