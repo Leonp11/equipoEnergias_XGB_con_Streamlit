@@ -35,7 +35,15 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 # PARTE 1: Inputs de demanda con sliders destacados
 # -----------------------------
 st.markdown(
-    "<h2 style='text-align: center; font-weight: bold; font-size:24px;'>⚡ Predicción de Demanda Eléctrica ⚡</h2>",
+    """
+    <div style="
+        text-align: center;
+        font-weight: bold;
+        font-size: 22px;
+    ">
+        ⚡ Predicción de Demanda Eléctrica ⚡
+    </div>
+    """,
     unsafe_allow_html=True
 )
 
