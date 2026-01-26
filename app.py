@@ -37,7 +37,6 @@ seccion = st.sidebar.radio("Selecciona sección", ["Predicción", "EDA"])
 st.markdown(
     """
     <div style="
-        text-align: center;
         font-weight: bold;
         font-size: 22px;
     ">
