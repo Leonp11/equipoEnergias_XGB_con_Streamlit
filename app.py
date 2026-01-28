@@ -55,7 +55,7 @@ except FileNotFoundError:
 if seccion == "EDA":
     st.title("")
     st.markdown(
-        "<h2 style='text-align:center;'>⚡📊 Análisis Exploratorio de Datos (EDA) 📊</h2>",
+        "<h2 style='text-align:center;'>📊 Análisis Exploratorio de Datos (EDA) 📊</h2>",
         unsafe_allow_html=True
     )
 
