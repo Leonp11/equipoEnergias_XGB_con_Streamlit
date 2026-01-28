@@ -42,7 +42,7 @@ if seccion == "EDA":
     # --------------------------
     # 1. Problema de Negocio y Contexto
     # --------------------------
-    st.subheader("1️⃣ El Problema de Negocio y el Contexto")
+    st.subheader("1. El Problema de Negocio y el Contexto")
     st.markdown("<div style='height:5px; background-color:#f39f18; width:50px; margin-bottom:15px;'></div>", unsafe_allow_html=True)
     st.write("""
 Decidimos abordar uno de los problemas más costosos y críticos del sector industrial: la predicción de la demanda eléctrica.
@@ -54,7 +54,7 @@ El reto principal que enfrentamos no fue solo técnico, sino de comportamiento: 
     # --------------------------
     # 2. Estrategia de Datos
     # --------------------------
-    st.subheader("2️⃣ La Estrategia de Datos")
+    st.subheader("2. La Estrategia de Datos")
     st.markdown("<div style='height:5px; background-color:#f39f18; width:50px; margin-bottom:15px;'></div>", unsafe_allow_html=True)
     st.write("""
 Al principio, planteamos la hipótesis de que la demanda dependía casi exclusivamente de la temperatura. Sin embargo, al analizar los datos en profundidad, nos dimos cuenta de que las variables climáticas clásicas solo tenían una correlación moderada con el consumo real (alrededor de un 0.4).
@@ -64,7 +64,7 @@ Al principio, planteamos la hipótesis de que la demanda dependía casi exclusiv
     # --------------------------
     # 3. Lags y la clave temporal
     # --------------------------
-    st.subheader("3️⃣ La verdadera clave fue entender la inercia temporal")
+    st.subheader("3. La verdadera clave fue entender la inercia temporal")
     st.markdown("<div style='height:5px; background-color:#f39f18; width:50px; margin-bottom:15px;'></div>", unsafe_allow_html=True)
     st.write("""
 Llegamos a la conclusión de que el mejor predictor del consumo actual no es el clima, sino el pasado inmediato:
@@ -80,7 +80,7 @@ Por ello, construimos variables de 'Lags' o retardos temporales.
     # --------------------------
     # 4. Batalla de Modelos
     # --------------------------
-    st.subheader("4️⃣ La Batalla de Modelos: XGBoost vs N-BEATS")
+    st.subheader("4. La Batalla de Modelos: XGBoost vs N-BEATS")
     st.markdown("<div style='height:5px; background-color:#f39f18; width:50px; margin-bottom:15px;'></div>", unsafe_allow_html=True)
     st.write("""
 Con los datos listos, llegamos a la fase de modelado. Decidimos poner a competir a nuestro modelo basado en árboles (XGBoost) contra una arquitectura de Deep Learning moderna (N-BEATS).
@@ -92,7 +92,7 @@ En contraste, nuestro modelo XGBoost alcanzó el 0.99.
     # --------------------------
     # 5. Validación y Resultados
     # --------------------------
-    st.subheader("5️⃣ Validación y Resultados")
+    st.subheader("5. Validación y Resultados")
     st.markdown("<div style='height:5px; background-color:#f39f18; width:50px; margin-bottom:15px;'></div>", unsafe_allow_html=True)
     st.write("""
 Para evitar engañarnos con métricas de entrenamiento, diseñamos una validación temporal estricta.
@@ -103,7 +103,7 @@ Mantuvimos el R^2 superior a 0.99 y, visualmente, el modelo replicó perfectamen
     # --------------------------
     # 6. Limitaciones y Observaciones
     # --------------------------
-    st.subheader("6️⃣ Limitaciones y Observaciones")
+    st.subheader("6. Limitaciones y Observaciones")
     st.markdown("<div style='height:5px; background-color:#f39f18; width:50px; margin-bottom:15px;'></div>", unsafe_allow_html=True)
     st.write("""
 - Dependencia del Dato Reciente: Nuestro modelo depende mucho del dato de 'hace una hora'.
