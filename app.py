@@ -54,10 +54,6 @@ except FileNotFoundError:
 if seccion == "EDA":
     st.title("📊 Análisis Exploratorio de Datos (EDA)")
 
-    st.info(
-        "Al seleccionar EDA en el menú, se muestra únicamente esta sección, "
-        "sin volver a cargar la parte de predicción."
-    )
 
     # ---------- 1. Problema de Negocio ----------
     st.subheader("1. El Problema de Negocio y el Contexto")
