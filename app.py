@@ -125,7 +125,7 @@ if seccion == "Predicción":
     # --------------------------
     # Lags Temporales
     # --------------------------
-    st.subheader("📊 Lags Temporales")
+    st.subheader("📊 Demanda real anterior")
     st.markdown("<div style='height:5px; background-color:#f39f18; width:50px; margin-bottom:15px;'></div>", unsafe_allow_html=True)
 
     def color_por_demanda(val):
@@ -154,7 +154,7 @@ if seccion == "Predicción":
     # --------------------------
     # Contexto Temporal
     # --------------------------
-    st.subheader("🕒 Contexto Temporal")
+    st.subheader("🕒 Fecha")
     st.markdown("<div style='height:5px; background-color:#f39f18; width:50px; margin-bottom:15px;'></div>", unsafe_allow_html=True)
     col1, col2 = st.columns([2,1])
     with col1:
