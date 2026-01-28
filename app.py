@@ -31,6 +31,7 @@ st.set_page_config(
     layout="centered"
 )
 
+
 # -----------------------------------------
 # Sidebar: Selección de sección
 # -----------------------------------------
@@ -52,7 +53,13 @@ except FileNotFoundError:
 # SECCIÓN: EDA
 # -----------------------------------------
 if seccion == "EDA":
-    st.title("📊 Análisis Exploratorio de Datos (EDA)")
+    st.title("")
+    st.markdown(
+        "<h2 style='text-align:center;'>⚡📊 Análisis Exploratorio de Datos (EDA) 📊</h2>",
+        unsafe_allow_html=True
+    )
+
+
 
 
     # ---------- 1. Problema de Negocio ----------
